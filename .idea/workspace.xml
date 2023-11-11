@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0fa6a71f-ab12-4d46-9200-afcac52808be" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/DatabaseConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/PalabraDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/100.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw00.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw01.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw02.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw03.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw04.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw05.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw06.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw07.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw08.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw09.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/script.sql" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="FxmlFile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2XdMHdQPZ5VhWHXnUump6w4WZ5W" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "true",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/llorieb/IdeaProjects/Ahorcado/src/main/resources/com/llorieb/ahorcado/images",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "vcs.Git"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images" />
+      <recent name="$PROJECT_DIR$/target/classes/com/llorieb/ahorcado/images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Ahorcado" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.llorieb.ahorcado.Main" />
+      <module name="Ahorcado" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0fa6a71f-ab12-4d46-9200-afcac52808be" name="Changes" comment="" />
+      <created>1698954416440</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1698954416440</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java</url>
+          <line>34</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
