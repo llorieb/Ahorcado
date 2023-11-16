@@ -24,7 +24,7 @@ public class PalabraDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                DatabaseConnection.closeConnection();
+                //DatabaseConnection.closeConnection();
             }
         }
         return palabraSeleccionada;

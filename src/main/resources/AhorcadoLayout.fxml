@@ -49,16 +49,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="630.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llorieb.ahorcado.AhorcadoController">
+<VBox prefHeight="645.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llorieb.ahorcado.AhorcadoController">
   <children>
       <MenuBar prefWidth="400.0" VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="Archivo">
           <items>
-            <MenuItem mnemonicParsing="false" text="Jugar" onAction="#iniciarJuego" />
+            <MenuItem fx:id="menuJugar" mnemonicParsing="false" onAction="#iniciarJuego" text="Jugar" />
                   <MenuItem mnemonicParsing="false" text="Preferencias..." />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Salir" />
+            <MenuItem fx:id="menuSalir" mnemonicParsing="false" onAction="#cerrarAplicacion" text="Salir" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Ayuda">
@@ -72,8 +72,8 @@
       </MenuBar>
       <FlowPane prefHeight="24.0" prefWidth="520.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#iniciarJuego" prefWidth="120.0" text="Jugar" />
-            <Button mnemonicParsing="false" prefWidth="120.0" text="Button" />
+            <Button fx:id="btnJugar" mnemonicParsing="false" onAction="#iniciarJuego" prefWidth="120.0" text="Jugar" />
+            <Button fx:id="btnDetener" disable="true" mnemonicParsing="false" onAction="#detenerJuego" prefWidth="120.0" text="Detener" />
             <Button mnemonicParsing="false" prefWidth="120.0" text="Button" />
             <Button mnemonicParsing="false" prefWidth="120.0" text="Button" />
          </children>
@@ -98,9 +98,9 @@
                         <Insets />
                      </VBox.margin>
                      <graphic>
-                        <ImageView fitHeight="131.0" fitWidth="120.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="reloj" fitHeight="131.0" fitWidth="120.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/sw00.png" />
+                              <Image url="@images/sw0.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -121,13 +121,13 @@
             </Label>
             <Label fx:id="palabraText" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="_ _ _ _ _ _ _ _ _" textAlignment="CENTER" textFill="#3c3c3c">
                <VBox.margin>
-                  <Insets />
+                  <Insets top="15.0" />
                </VBox.margin>
                <font>
-                  <Font size="24.0" />
+                  <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <GridPane alignment="TOP_CENTER">
+            <GridPane fx:id="gridBotones" alignment="TOP_CENTER" disable="true">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="74.0" minWidth="10.0" prefWidth="50.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="10.0" prefWidth="50.0" />
@@ -148,37 +148,37 @@
                   <Insets left="110.0" right="110.0" top="25.0" />
                </VBox.margin>
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" prefWidth="30.0" text="A" textAlignment="CENTER" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="B" GridPane.columnIndex="1" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="C" GridPane.columnIndex="2" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="D" GridPane.columnIndex="3" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="E" GridPane.columnIndex="4" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="F" GridPane.columnIndex="5" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="G" GridPane.columnIndex="6" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="H" GridPane.columnIndex="7">
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="A" textAlignment="CENTER" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="B" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="C" GridPane.columnIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="D" GridPane.columnIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="E" GridPane.columnIndex="4" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="F" GridPane.columnIndex="5" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="G" GridPane.columnIndex="6" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="H" GridPane.columnIndex="7">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></Button>
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="I" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="J" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="K" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="L" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="M" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="N" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="Ñ" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="O" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="P" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="Q" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="R" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="S" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="T" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="U" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="V" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="W" GridPane.columnIndex="7" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="X" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="Y" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="Z" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                  <Button mnemonicParsing="false" prefWidth="30.0" text="Z" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="I" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="J" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="K" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="L" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="M" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="N" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Ñ" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="O" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="P" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Q" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="R" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="S" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="T" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="U" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="V" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="W" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="X" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Y" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Z" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Z" GridPane.columnIndex="5" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </children>
