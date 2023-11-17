@@ -4,34 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fa6a71f-ab12-4d46-9200-afcac52808be" name="Changes" comment="Lógica de cronómetro y finalización del tiempo con cuadro de diálogo personalizado.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/ImagenPersonaje.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/ImagenReloj.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/sonidos/error.mp3" afterDir="false" />
+    <list default="true" id="0fa6a71f-ab12-4d46-9200-afcac52808be" name="Changes" comment="Subida inicial">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/properties/textos_es.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/sonidos/error.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sqlite-jdbc-3.41.0.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/PalabraDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/PalabraDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ahorcado.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ahorcado.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/AhorcadoLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AhorcadoLayout.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/100.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/100.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw00.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw01.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw02.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw03.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw04.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw05.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw06.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw07.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw7.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw08.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw8.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw09.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw9.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw10.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw10.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw11.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw11.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/images/sw12.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/sw12.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/llorieb/ahorcado/script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/script.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sonidos/error.mp3" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +26,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -61,23 +40,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "true",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/mario/IdeaProjects/Ahorcado/src/main/resources/images",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.3798127",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/mario/IdeaProjects/Ahorcado/src/main/resources/images&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.3798127&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/images" />
@@ -145,21 +124,5 @@
     <MESSAGE value="Archivos faltantes" />
     <MESSAGE value="Lógica de cronómetro y finalización del tiempo con cuadro de diálogo personalizado." />
     <option name="LAST_COMMIT_MESSAGE" value="Lógica de cronómetro y finalización del tiempo con cuadro de diálogo personalizado." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java</url>
-          <line>62</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java</url>
-          <line>70</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

@@ -10,18 +10,16 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Modality;
-import javafx.util.Duration;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Modality;
+import javafx.util.Duration;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
 public class AhorcadoController {
@@ -43,27 +41,29 @@ public class AhorcadoController {
     @FXML
     private GridPane gridBotones;
 
-    final int tiempoMaximo = 120; // Tiempo en segundos
+    final int tiempoMaximo = 12; // Tiempo en segundos
     private int tiempoRestante = tiempoMaximo;
     private Timeline timeline;
-    private int segmento;
-    private int contador;
-    String palabraSecreta;
-    StringBuilder palabraActual;
-
+    private int segmentoTiempo;
+    private int contadorTiempo;
+    private int indiceReloj;
+    private int indicePersonaje;
+    private String palabraSecreta;
+    private StringBuilder palabraActual;
+    private ResourceBundle bundle;
     private final List<ImagenReloj> imagenesReloj = new ArrayList<>();
-
     private final List<ImagenPersonaje> imagenesPersonaje = new ArrayList<>();
+    private final int MAX_INTENTOS = 6;
+
 
 
     public void initialize() {
-        //InputStream stream = getClass().getResourceAsStream("/images/100.png");
-        //imageView.setImage(new Image(stream));
-        cargarImagenesReloj();
-        tiempoText.setText(String.valueOf(tiempoRestante));
+        bundle = ResourceBundle.getBundle("/properties/textos_es");
 
-        // Inicializa el juego aquí
-        // Carga las imágenes, la palabra secreta y configura la UI
+        cargarImagenesReloj();
+        cargarImagenesPersonaje();
+
+        tiempoText.setText(String.valueOf(tiempoRestante));
     }
 
     private void cargarImagenesReloj() {
@@ -80,7 +80,7 @@ public class AhorcadoController {
     private void cargarImagenesPersonaje() {
         // Supongamos que tienes archivos PNG llamados imagen1.png, imagen2.png, etc.
         for (int i = 100; i <= 106; i++) {
-            String nombreImagen = "" + i + ".png";
+            String nombreImagen = "/images/" + i + ".png";
             InputStream input = getClass().getResourceAsStream(nombreImagen);
 
             Image imagen = new Image(input);
@@ -94,24 +94,22 @@ public class AhorcadoController {
 
         ponerEstadoJuego();
 
-        // Configurar la imagen del ahorcado inicial
-        Image image = new Image(getClass().getResourceAsStream("images/100.png"));
-        dibujo.setImage(image);
-
         tiempoRestante = tiempoMaximo;
         tiempoText.setText(String.valueOf(tiempoRestante));
 
-        segmento = tiempoRestante / 12;
-        contador = 0;
+        segmentoTiempo = tiempoRestante / 12;
+        contadorTiempo = 0;
+        indiceReloj = 0;
+        indicePersonaje = 0;
+
 
         // Configurar el temporizador
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            tiempoRestante--;
-            tiempoText.setText(String.valueOf(tiempoRestante));
+            tiempoText.setText(String.valueOf(--tiempoRestante));
 
-            contador++;
-            if (contador == segmento) {
-                contador = 0;
+            if (++contadorTiempo == segmentoTiempo) {
+                contadorTiempo = 0;
+                avanzarImagenReloj(++indiceReloj);
             }
 
             if (tiempoRestante <= 0) {
@@ -149,11 +147,17 @@ public class AhorcadoController {
         Platform.exit();
     }
 
-    private void timeout() {
+    private void detenerTemporizador() {
+        if (timeline != null && timeline.getStatus() == Animation.Status.RUNNING) {
+            timeline.stop();
+        }
+    }
+
+    private void mostrarMensaje (String titulo, String mensaje, Image img) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Tiempo agotado");
+        alert.setTitle(titulo);
         alert.setHeaderText(null);
-        alert.setContentText("¡Tiempo agotado! Perdiste");
+        alert.setContentText(mensaje);
 
         // Establecer el cuadro de diálogo como modal para bloquear la interacción con la ventana principal
         alert.initModality(Modality.APPLICATION_MODAL);
@@ -161,19 +165,35 @@ public class AhorcadoController {
         // Añadir botón "OK"
         alert.getButtonTypes().setAll(ButtonType.OK);
 
-        ImageView imagen = new ImageView (new Image(getClass().getResourceAsStream("images/sw12.png")));
-        imagen.setFitWidth(64);
-        imagen.setFitHeight(64);
+        ImageView imagen = new ImageView (img);
+        imagen.setFitWidth(80);
+        imagen.setFitHeight(80);
         alert.setGraphic(imagen);
 
         // Mostrar el cuadro de diálogo y esperar a que el usuario lo cierre
         alert.showAndWait();
     }
 
-    private void detenerTemporizador() {
-        if (timeline != null && timeline.getStatus() == Animation.Status.RUNNING) {
-            timeline.stop();
-        }
+    private void timeout() {
+        String titulo = bundle.getString("alert.tiempo.agotado.title");
+        String mensaje = bundle.getString("alert.tiempo.agotado.message");
+        Image img = new Image(getClass().getResourceAsStream(bundle.getString("alert.reloj.lleno")));
+
+        mostrarMensaje (titulo, mensaje, img);
+    }
+
+    private void mostrarMensajePerder() {
+        String titulo = bundle.getString("alert.ahorcado.title");
+        String mensaje = bundle.getString("alert.ahorcado.message");
+        Image img = new Image(getClass().getResourceAsStream(bundle.getString("alert.ahorcado.imagen")));
+
+        mostrarMensaje(titulo, mensaje, img);
+    }
+
+    private void perderJugada() {
+        detenerTemporizador();
+        ponerEstadoDetenido();
+        mostrarMensajePerder();
     }
 
     private String obtenerPalabraSecreta() {
@@ -182,6 +202,14 @@ public class AhorcadoController {
     }
 
     private void sonidoError() {
+        try {
+            String rutaSonido = getClass().getResource("/sonidos/" + "error.wav").toExternalForm();
+            Media media = new Media(rutaSonido);
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -200,7 +228,13 @@ public class AhorcadoController {
             mostrarPalabraAdivinar();
         }
         else {
-            sonidoError();
+            avanzarImagenPersonaje(++indicePersonaje);
+            if (indicePersonaje == MAX_INTENTOS) {
+                perderJugada();
+            }
+            else {
+                sonidoError();
+            }
         }
     }
 
@@ -225,6 +259,8 @@ public class AhorcadoController {
     }
 
     private void ponerEstadoJuego() {
+        ponerEstadoInicialGraficos();
+
         btnJugar.setDisable(true);
         menuJugar.setDisable(true);
         btnDetener.setDisable(false);
@@ -240,7 +276,17 @@ public class AhorcadoController {
 
     private void ponerEstadoInicialGraficos() {
         reloj.setImage(imagenesReloj.get(0).getImagen());
+        dibujo.setImage(imagenesPersonaje.get(0).getImagen());
     }
+
+    private void avanzarImagenReloj(int indice) {
+        reloj.setImage(imagenesReloj.get(indice).getImagen());
+    }
+
+    private void avanzarImagenPersonaje(int indice) {
+        dibujo.setImage(imagenesPersonaje.get(indice).getImagen());
+    }
+
 
     // Implementa aquí la lógica del juego, como verificar la letra elegida por el jugador,
     // actualizar la palabra actual, verificar si se ganó o se perdió, etc.
