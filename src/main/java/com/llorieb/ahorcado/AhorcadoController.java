@@ -12,20 +12,27 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.util.Duration;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 
 public class AhorcadoController {
 
     @FXML
     private ImageView dibujo;
+    @FXML
+    private Rectangle fondoDibujo;
     @FXML
     private ImageView reloj;
     @FXML
@@ -38,6 +45,8 @@ public class AhorcadoController {
     private Button btnJugar;
     @FXML
     private Button btnDetener;
+    @FXML
+    private Button btnArriesgar;
     @FXML
     private GridPane gridBotones;
 
@@ -54,8 +63,6 @@ public class AhorcadoController {
     private final List<ImagenReloj> imagenesReloj = new ArrayList<>();
     private final List<ImagenPersonaje> imagenesPersonaje = new ArrayList<>();
     private final int MAX_INTENTOS = 6;
-
-
 
     public void initialize() {
         bundle = ResourceBundle.getBundle("/properties/textos_es");
@@ -101,7 +108,6 @@ public class AhorcadoController {
         contadorTiempo = 0;
         indiceReloj = 0;
         indicePersonaje = 0;
-
 
         // Configurar el temporizador
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -175,6 +181,8 @@ public class AhorcadoController {
     }
 
     private void timeout() {
+        sonidoPerder();
+
         String titulo = bundle.getString("alert.tiempo.agotado.title");
         String mensaje = bundle.getString("alert.tiempo.agotado.message");
         Image img = new Image(getClass().getResourceAsStream(bundle.getString("alert.reloj.lleno")));
@@ -193,8 +201,34 @@ public class AhorcadoController {
     private void perderJugada() {
         detenerTemporizador();
         ponerEstadoDetenido();
+        sonidoPerder();
         mostrarMensajePerder();
     }
+
+    private void mostrarMensajeGanar() {
+        //String titulo = bundle.getString("alert.ahorcado.title");
+        //String mensaje = bundle.getString("alert.ahorcado.message");
+        Image img = new Image(getClass().getResourceAsStream(bundle.getString("alert.ahorcado.imagen")));
+
+        mostrarMensaje("Ganaste", "Adivinaste la palabra!", img);
+    }
+
+    private void ganarJugada() {
+        detenerTemporizador();
+        ponerEstadoDetenido();
+        completarPalabraSecreta();
+        mostrarPalabraAdivinar();
+        //sonidoPerder();
+        mostrarMensajeGanar();
+    }
+
+    private void completarPalabraSecreta() {
+        for (int i = 0; i < palabraSecreta.length(); i++) {
+            char letra = palabraSecreta.charAt(i);
+            palabraActual.setCharAt(i, letra);
+        }
+    }
+
 
     private String obtenerPalabraSecreta() {
         PalabraDAO palabraDAO = new PalabraDAO();
@@ -202,11 +236,26 @@ public class AhorcadoController {
     }
 
     private void sonidoError() {
+        String rutaSonido = getClass().getResource("/sonidos/" + "error.wav").toExternalForm();
+        reproducirSonido(rutaSonido);
+    }
+
+    private void sonidoPerder() {
+        String rutaSonido = getClass().getResource("/sonidos/" + "lose.wav").toExternalForm();
+        reproducirSonido(rutaSonido);
+    }
+
+    private void reproducirSonido(String rutaSonido) {
         try {
-            String rutaSonido = getClass().getResource("/sonidos/" + "error.wav").toExternalForm();
             Media media = new Media(rutaSonido);
             MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+            mediaPlayer.setOnEndOfMedia(() -> {
+                mediaPlayer.dispose(); // Liberar recursos después de reproducir el sonido
+            });
+
             mediaPlayer.play();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -234,8 +283,28 @@ public class AhorcadoController {
             }
             else {
                 sonidoError();
+
+                Timeline timeline = getTimelineFondoError();
+                timeline.play();
             }
         }
+    }
+
+
+    private Timeline getTimelineFondoError() {
+        Paint fillOriginal = fondoDibujo.getFill();
+
+        Duration medioSegundo = Duration.millis(700);
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, e -> {
+                    fondoDibujo.setFill(Color.RED);
+                }),
+                new KeyFrame(medioSegundo, e -> {
+                    fondoDibujo.setFill(fillOriginal);
+                })
+        );
+        timeline.setCycleCount(1);
+        return timeline;
     }
 
     private void mostrarPalabraAdivinar () {
@@ -247,6 +316,46 @@ public class AhorcadoController {
 
         palabraText.setText(builder.toString());
     }
+
+    @FXML
+    private void arriesgarPalabra() {
+        String titulo = bundle.getString("input.arriesgar");
+        String mensaje = bundle.getString("input.arriesgar.palabra");
+
+        TextInputDialog dialog = new TextInputDialog();
+
+        dialog.setTitle(titulo);
+        dialog.setHeaderText(null);
+        dialog.initOwner(null);
+        dialog.setContentText(mensaje);
+
+        Optional<TextField> resultado = Optional.ofNullable(dialog.getEditor());
+
+        resultado.ifPresent(textField -> {
+            // Definir un operador que permita solo letras mayúsculas
+            UnaryOperator<TextFormatter.Change> filter = change -> {
+                String newText = change.getControlNewText();
+                if (Pattern.matches("[a-zA-ZÑñ ]*", newText)) {
+                    return change;
+                } else {
+                    return null;
+                }
+            };
+
+            TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+            textField.setTextFormatter(textFormatter);
+        });
+
+        Optional<String> respuesta = dialog.showAndWait();
+
+        respuesta.ifPresent(palabraIngresada -> {
+            if (palabraIngresada.toUpperCase().equals(palabraSecreta)) {
+                dialog.close();
+                ganarJugada();
+            }
+        });
+    }
+
 
     private void enmascararPalabraAdivinar() {
         for (char c : palabraSecreta.toCharArray()) {
@@ -262,6 +371,7 @@ public class AhorcadoController {
         ponerEstadoInicialGraficos();
 
         btnJugar.setDisable(true);
+        btnArriesgar.setDisable(false);
         menuJugar.setDisable(true);
         btnDetener.setDisable(false);
         gridBotones.setDisable(false);
@@ -269,6 +379,7 @@ public class AhorcadoController {
 
     private void ponerEstadoDetenido() {
         btnJugar.setDisable(false);
+        btnArriesgar.setDisable(true);
         menuJugar.setDisable(false);
         btnDetener.setDisable(true);
         gridBotones.setDisable(true);
@@ -286,8 +397,4 @@ public class AhorcadoController {
     private void avanzarImagenPersonaje(int indice) {
         dibujo.setImage(imagenesPersonaje.get(indice).getImagen());
     }
-
-
-    // Implementa aquí la lógica del juego, como verificar la letra elegida por el jugador,
-    // actualizar la palabra actual, verificar si se ganó o se perdió, etc.
 }

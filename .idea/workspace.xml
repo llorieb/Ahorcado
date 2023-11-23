@@ -4,12 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fa6a71f-ab12-4d46-9200-afcac52808be" name="Changes" comment="Subida inicial">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/properties/textos_es.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/sonidos/error.wav" afterDir="false" />
+    <list default="true" id="0fa6a71f-ab12-4d46-9200-afcac52808be" name="Changes" comment="Reestructuración de resources. Carga de imágenes de reloj.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sonidos/error.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/AhorcadoLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AhorcadoLayout.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/100.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/100.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/101.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/101.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/102.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/102.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/103.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/103.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/104.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/104.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/105.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/105.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/images/106.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/106.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/properties/textos_es.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/textos_es.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sonidos/error.wav" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sonidos/error.wav" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
