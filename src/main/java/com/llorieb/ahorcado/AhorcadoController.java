@@ -60,6 +60,7 @@ public class AhorcadoController {
     private String palabraSecreta;
     private StringBuilder palabraActual;
     private ResourceBundle bundle;
+    TextInputDialog dialogArriesgar;
     private final List<ImagenReloj> imagenesReloj = new ArrayList<>();
     private final List<ImagenPersonaje> imagenesPersonaje = new ArrayList<>();
     private final int MAX_INTENTOS = 6;
@@ -177,12 +178,14 @@ public class AhorcadoController {
         alert.setGraphic(imagen);
 
         // Mostrar el cuadro de diálogo y esperar a que el usuario lo cierre
-        alert.showAndWait();
+        alert.show();
     }
 
     private void timeout() {
-        sonidoPerder();
+        perderJugadaTimeout();
+    }
 
+    private void mostrarMensajeTimeout() {
         String titulo = bundle.getString("alert.tiempo.agotado.title");
         String mensaje = bundle.getString("alert.tiempo.agotado.message");
         Image img = new Image(getClass().getResourceAsStream(bundle.getString("alert.reloj.lleno")));
@@ -196,6 +199,18 @@ public class AhorcadoController {
         Image img = new Image(getClass().getResourceAsStream(bundle.getString("alert.ahorcado.imagen")));
 
         mostrarMensaje(titulo, mensaje, img);
+    }
+
+    private void perderJugadaTimeout() {
+        if (dialogArriesgar != null ) {
+            dialogArriesgar.close();
+            dialogArriesgar = null;
+        }
+
+        detenerTemporizador();
+        ponerEstadoDetenido();
+        sonidoPerder();
+        mostrarMensajeTimeout();
     }
 
     private void perderJugada() {
@@ -221,6 +236,7 @@ public class AhorcadoController {
         //sonidoPerder();
         mostrarMensajeGanar();
     }
+
 
     private void completarPalabraSecreta() {
         for (int i = 0; i < palabraSecreta.length(); i++) {
@@ -275,6 +291,9 @@ public class AhorcadoController {
                 }
             }
             mostrarPalabraAdivinar();
+            if (palabraActual.toString().equals(palabraSecreta)) {
+                ganarJugada();
+            }
         }
         else {
             avanzarImagenPersonaje(++indicePersonaje);
@@ -282,10 +301,10 @@ public class AhorcadoController {
                 perderJugada();
             }
             else {
-                sonidoError();
-
                 Timeline timeline = getTimelineFondoError();
                 timeline.play();
+
+                sonidoError();
             }
         }
     }
@@ -298,9 +317,11 @@ public class AhorcadoController {
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, e -> {
                     fondoDibujo.setFill(Color.RED);
+                    gridBotones.setDisable(true);
                 }),
                 new KeyFrame(medioSegundo, e -> {
                     fondoDibujo.setFill(fillOriginal);
+                    gridBotones.setDisable(false);
                 })
         );
         timeline.setCycleCount(1);
@@ -322,14 +343,14 @@ public class AhorcadoController {
         String titulo = bundle.getString("input.arriesgar");
         String mensaje = bundle.getString("input.arriesgar.palabra");
 
-        TextInputDialog dialog = new TextInputDialog();
+        dialogArriesgar = new TextInputDialog();
 
-        dialog.setTitle(titulo);
-        dialog.setHeaderText(null);
-        dialog.initOwner(null);
-        dialog.setContentText(mensaje);
+        dialogArriesgar.setTitle(titulo);
+        dialogArriesgar.setHeaderText(null);
+        dialogArriesgar.initOwner(null);
+        dialogArriesgar.setContentText(mensaje);
 
-        Optional<TextField> resultado = Optional.ofNullable(dialog.getEditor());
+        Optional<TextField> resultado = Optional.ofNullable(dialogArriesgar.getEditor());
 
         resultado.ifPresent(textField -> {
             // Definir un operador que permita solo letras mayúsculas
@@ -346,11 +367,11 @@ public class AhorcadoController {
             textField.setTextFormatter(textFormatter);
         });
 
-        Optional<String> respuesta = dialog.showAndWait();
+        Optional<String> respuesta = dialogArriesgar.showAndWait();
 
         respuesta.ifPresent(palabraIngresada -> {
             if (palabraIngresada.toUpperCase().equals(palabraSecreta)) {
-                dialog.close();
+                dialogArriesgar.close();
                 ganarJugada();
             }
         });
