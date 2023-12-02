@@ -54,7 +54,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="645.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llorieb.ahorcado.AhorcadoController">
+<VBox prefHeight="665.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llorieb.ahorcado.AhorcadoController">
   <children>
       <MenuBar prefWidth="400.0" VBox.vgrow="NEVER">
       <menus>
@@ -77,10 +77,40 @@
       </MenuBar>
       <FlowPane prefHeight="24.0" prefWidth="520.0">
          <children>
-            <Button fx:id="btnJugar" mnemonicParsing="false" onAction="#iniciarJuego" prefWidth="120.0" text="Jugar" />
-            <Button fx:id="btnDetener" disable="true" mnemonicParsing="false" onAction="#detenerJuego" prefWidth="120.0" text="Detener" />
-            <Button fx:id="btnArriesgar" disable="true" mnemonicParsing="false" onAction="#arriesgarPalabra" prefWidth="120.0" text="Arriesgar" />
-            <Button mnemonicParsing="false" prefWidth="120.0" text="Button" />
+            <Button fx:id="btnJugar" mnemonicParsing="false" onAction="#iniciarJuego" prefHeight="45.0" prefWidth="120.0" text="Jugar">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/rope.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font></Button>
+            <Button fx:id="btnDetener" disable="true" mnemonicParsing="false" onAction="#detenerJuego" prefHeight="45.0" prefWidth="120.0" text="Detener">
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/stop.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font></Button>
+            <Button fx:id="btnArriesgar" disable="true" mnemonicParsing="false" onAction="#arriesgarPalabra" prefHeight="45.0" prefWidth="120.0" text="Arriesgar">
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/arriesgar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="120.0" text="Button" />
          </children>
       </FlowPane>
       <HBox prefHeight="350.0" prefWidth="480.0" style="-fx-border-color: transparent transparent #868686 transparent;">

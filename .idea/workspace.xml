@@ -4,19 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fa6a71f-ab12-4d46-9200-afcac52808be" name="Changes" comment="Reestructuración de resources. Carga de imágenes de reloj.">
+    <list default="true" id="0fa6a71f-ab12-4d46-9200-afcac52808be" name="Changes" comment="Restricción de grid de botones y finalización de juego por completitud de palabra">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/arriesgar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/rope.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/stop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/sonidos/lose.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/llorieb/ahorcado/AhorcadoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/AhorcadoLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AhorcadoLayout.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/100.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/100.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/101.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/101.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/102.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/102.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/103.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/103.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/104.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/104.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/105.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/105.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/106.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/106.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/properties/textos_es.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/properties/textos_es.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sonidos/error.wav" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sonidos/error.wav" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +107,23 @@
       <option name="project" value="LOCAL" />
       <updated>1699674227919</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Cambio de imágenes y efecto de fondo cuando hay error. Arriesgar palabra.">
+      <option name="closed" value="true" />
+      <created>1700715767252</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1700715767252</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Restricción de grid de botones y finalización de juego por completitud de palabra">
+      <option name="closed" value="true" />
+      <created>1700876463179</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1700876463179</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -130,6 +140,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Archivos faltantes" />
     <MESSAGE value="Lógica de cronómetro y finalización del tiempo con cuadro de diálogo personalizado." />
-    <option name="LAST_COMMIT_MESSAGE" value="Lógica de cronómetro y finalización del tiempo con cuadro de diálogo personalizado." />
+    <MESSAGE value="Cambio de imágenes y efecto de fondo cuando hay error. Arriesgar palabra." />
+    <MESSAGE value="Restricción de grid de botones y finalización de juego por completitud de palabra" />
+    <option name="LAST_COMMIT_MESSAGE" value="Restricción de grid de botones y finalización de juego por completitud de palabra" />
   </component>
 </project>
