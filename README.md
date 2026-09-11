@@ -31,7 +31,7 @@ El objetivo es descubrir la palabra o frase antes de agotar los intentos o el ti
 - Tiempo configurable: **15, 30, 45 o 60 segundos**.
 - Posibilidad de seleccionar letras o **arriesgar la respuesta completa**.
 - Manejo de acentos, diéresis, eñes y otros caracteres especiales.
-- Sonidos para aciertos, errores, victoria y derrota.
+- Sonidos para errores, victoria y derrota.
 - Animaciones e interfaz gráfica moderna.
 - Preferencias persistentes entre partidas.
 - Ayuda integrada dentro de la aplicación.
@@ -39,9 +39,25 @@ El objetivo es descubrir la palabra o frase antes de agotar los intentos o el ti
 - Funcionamiento completamente offline.
 - No requiere tener Java instalado en la computadora del usuario.
 
-## Capturas
+## Capturas de pantalla
 
-Las capturas de pantalla del juego se incorporarán próximamente.
+<p align="center">
+  <img src="docs/screenshot-main.png" alt="Ahorcado - Pantalla principal" width="520">
+</p>
+
+<p align="center">
+  <em>Pantalla principal del juego.</em>
+</p>
+
+<br>
+
+<p align="center">
+  <img src="docs/screenshot-time.png" alt="Ahorcado - Partida con tiempo configurable" width="520">
+</p>
+
+<p align="center">
+  <em>Partida con límite de tiempo configurable.</em>
+</p>
 
 ## Descargas
 
