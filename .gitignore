@@ -36,3 +36,14 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+.idea/
+*.iml
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Linux
+*~
+.directory

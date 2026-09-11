@@ -1,0 +1,12 @@
+AHORCADO V17 - ACERCA DE
+
+- Se implementó Ayuda > Acerca de... como overlay integrado.
+- Usa el personaje sin ahorcar (100.png) a 125 x 125 px.
+- Muestra:
+    Ahorcado
+    Versión 1.0.0
+    Ahorcado - Copyright (c) 1996-2026 Mario Borelli
+- Mantiene la estética de tarjetas, sombras y animaciones del resto del juego.
+- Cerrar mediante botón o tecla Esc.
+- Si se abre durante una partida, el temporizador queda pausado mientras se
+  muestra el overlay y se reanuda al cerrarlo.

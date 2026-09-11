@@ -1,0 +1,17 @@
+AHORCADO V21 - RELEASE CANDIDATE WINDOWS 1.0.0
+
+- Preparado flujo completo de packaging Windows con jpackage.
+- 00-verificar-requisitos.bat: valida JDK, jpackage y WiX.
+- 01-crear-portable.bat: compila y genera Ahorcado.exe autocontenido.
+- 02-crear-instalador.bat: genera el instalador EXE de Windows.
+- build-windows.bat: ejecuta ambos pasos en secuencia.
+- Vendor cambiado a Mario Borelli.
+- Copyright incorporado al metadato del paquete.
+- Se conserva el icono definitivo de la aplicacion.
+- Se agrego UUID estable para permitir upgrades futuros:
+  FEA50566-24F7-55D5-85B8-23BD83E4DB4A
+- BUILD_WINDOWS.md reescrito con instrucciones y checklist de prueba.
+
+NOTA:
+El instalador Windows debe generarse en Windows. jpackage no permite crear
+un EXE de Windows desde Linux/macOS.

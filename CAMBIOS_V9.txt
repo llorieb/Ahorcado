@@ -1,0 +1,7 @@
+AHORCADO V9 - Overlay de derrota ajustado
+
+- La imagen del ahorcado en el overlay de derrota usa una caja visual de 125 x 125 px.
+- El reloj de tiempo agotado conserva 92 x 92 px.
+- La diferencia compensa los márgenes internos de 106.png para que ambos dibujos tengan una presencia visual equivalente.
+- La tarjeta del overlay ya no se estira verticalmente a toda la ventana: conserva la altura natural de su contenido.
+- Se mantienen todos los sonidos y mejoras de la versión 8.

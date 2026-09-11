@@ -38,7 +38,9 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -54,30 +56,32 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="665.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llorieb.ahorcado.AhorcadoController">
+<StackPane prefHeight="785.0" prefWidth="480.0" stylesheets="@css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llorieb.ahorcado.AhorcadoController">
   <children>
+    <VBox prefHeight="785.0" prefWidth="480.0">
+      <children>
       <MenuBar prefWidth="400.0" VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="Archivo">
           <items>
             <MenuItem fx:id="menuJugar" mnemonicParsing="false" onAction="#iniciarJuego" text="Jugar" />
-                  <MenuItem mnemonicParsing="false" text="Preferencias..." />
+                  <MenuItem fx:id="menuPreferencias" mnemonicParsing="false" onAction="#mostrarPreferencias" text="Preferencias..." />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem fx:id="menuSalir" mnemonicParsing="false" onAction="#cerrarAplicacion" text="Salir" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Ayuda">
           <items>
-                  <MenuItem mnemonicParsing="false" text="Indice" />
+                  <MenuItem mnemonicParsing="false" onAction="#mostrarComoJugar" text="Cómo jugar" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Acerca de..." />
+            <MenuItem mnemonicParsing="false" onAction="#mostrarAcercaDe" text="Acerca de..." />
           </items>
         </Menu>
       </menus>
       </MenuBar>
       <FlowPane prefHeight="24.0" prefWidth="520.0">
          <children>
-            <Button fx:id="btnJugar" mnemonicParsing="false" onAction="#iniciarJuego" prefHeight="45.0" prefWidth="120.0" text="Jugar">
+            <Button fx:id="btnJugar" mnemonicParsing="false" onAction="#iniciarJuego" prefHeight="45.0" prefWidth="120.0" text="Jugar" styleClass="boton-toolbar, boton-principal">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -109,135 +113,452 @@
                </graphic>
                <font>
                   <Font name="System Bold" size="11.0" />
-               </font></Button>
-            <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="120.0" text="Button" />
-         </children>
-      </FlowPane>
-      <HBox prefHeight="350.0" prefWidth="480.0" style="-fx-border-color: transparent transparent #868686 transparent;">
-         <children>
-            <StackPane prefHeight="150.0" prefWidth="200.0">
-               <children>
-                  <Rectangle fx:id="fondoDibujo" arcHeight="15.0" arcWidth="15.0" height="300.0" stroke="#3c3c3c" strokeType="INSIDE" width="244.0">
-                     <fill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color red="0.07407407462596893" green="0.5988953709602356" blue="0.8421052694320679" />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </fill></Rectangle>
-                  <ImageView fx:id="dibujo" fitHeight="300.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
+               </font>
+            </Button>
+            <Button fx:id="btnSalir" disable="false" mnemonicParsing="false" onAction="#cerrarAplicacion" prefHeight="45.0" prefWidth="120.0" text="Salir" styleClass="boton-toolbar, boton-salir">
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/100.png" />
+                        <Image url="@images/exit.png" />
                      </image>
                   </ImageView>
-               </children>
-               <HBox.margin>
-                  <Insets left="30.0" />
-               </HBox.margin>
-            </StackPane>
-            <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </Button>
+         </children>
+      </FlowPane>
+      <HBox alignment="CENTER" prefHeight="350.0" prefWidth="480.0" spacing="12.0" styleClass="area-superior">
+         <padding>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </padding>
+         <children>
+            <!-- Tarjeta del personaje -->
+            <VBox alignment="CENTER" styleClass="tarjeta-superior, tarjeta-personaje">
                <children>
-                  <Label fx:id="tiempoText" alignment="BOTTOM_CENTER" contentDisplay="TOP" prefHeight="46.0" prefWidth="100.0" text="60" textAlignment="CENTER" textFill="#3c3c3c">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <graphic>
-                        <ImageView fx:id="reloj" fitHeight="131.0" fitWidth="120.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                  <StackPane>
+                     <children>
+                        <Rectangle fx:id="fondoDibujo" arcHeight="15.0" arcWidth="15.0" height="300.0" stroke="#3c3c3c" strokeType="INSIDE" width="244.0">
+                           <fill>
+                              <LinearGradient endX="1.0" endY="1.0">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.07407407462596893" green="0.5988953709602356" blue="0.8421052694320679" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="1.0" green="1.0" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <ImageView fx:id="dibujo" fitHeight="300.0" fitWidth="244.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@images/sw0.png" />
+                              <Image url="@images/100.png" />
                            </image>
                         </ImageView>
-                     </graphic>
-                  </Label>
+                     </children>
+                  </StackPane>
+               </children>
+            </VBox>
+
+            <!-- Tarjeta del reloj -->
+            <VBox alignment="CENTER" spacing="8.0" styleClass="tarjeta-superior, tarjeta-reloj">
+               <children>
+                  <Label styleClass="tarjeta-titulo" text="TIEMPO" />
+                  <ImageView fx:id="reloj" fitHeight="131.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/sw0.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="tiempoText" alignment="CENTER" styleClass="tiempo-valor" text="30" />
                </children>
             </VBox>
          </children>
       </HBox>
-      <VBox prefHeight="225.0" prefWidth="480.0">
+      <VBox prefHeight="345.0" prefWidth="480.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Paises" textFill="#3c3c3c">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
+            <VBox alignment="CENTER" styleClass="panel-palabra">
                <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Label>
-            <Label fx:id="palabraText" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="_ _ _ _ _ _ _ _ _" textAlignment="CENTER" textFill="#3c3c3c">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <GridPane fx:id="gridBotones" alignment="TOP_CENTER" disable="true">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="74.0" minWidth="10.0" prefWidth="50.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="10.0" prefWidth="50.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="64.0" minWidth="10.0" prefWidth="50.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="101.0" minWidth="10.0" prefWidth="50.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <VBox.margin>
-                  <Insets left="110.0" right="110.0" top="25.0" />
+                  <Insets left="12.0" right="12.0" top="10.0" />
                </VBox.margin>
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="A" textAlignment="CENTER" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="B" GridPane.columnIndex="1" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="C" GridPane.columnIndex="2" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="D" GridPane.columnIndex="3" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="E" GridPane.columnIndex="4" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="F" GridPane.columnIndex="5" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="G" GridPane.columnIndex="6" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="H" GridPane.columnIndex="7">
+                  <Label styleClass="categoria-titulo" text="CATEGORÍA" />
+                  <Label fx:id="categoriaValor" styleClass="categoria-valor" text="Países" />
+                  <FlowPane fx:id="palabraBox" alignment="CENTER" hgap="16.0" minHeight="88.0" prefHeight="88.0" prefWrapLength="430.0" rowValignment="CENTER" styleClass="palabra-box" vgap="8.0">
+                     <VBox.margin>
+                        <Insets top="12.0" />
+                     </VBox.margin>
+                     <children>
+                        <Label styleClass="palabra-placeholder" text="Iniciá una partida" />
+                     </children>
+                  </FlowPane>
+               </children>
+            </VBox>
+            <GridPane fx:id="gridBotones" alignment="TOP_CENTER" disable="true" styleClass="teclado" hgap="5.0" vgap="5.0">
+               <VBox.margin>
+                  <Insets top="18.0" />
+               </VBox.margin>
+               <children>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#checkLetter"  text="A" textAlignment="CENTER" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="B" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="C" GridPane.columnIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="D" GridPane.columnIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="E" GridPane.columnIndex="4" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="F" GridPane.columnIndex="5" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="G" GridPane.columnIndex="6" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="H" GridPane.columnIndex="7">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></Button>
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="I" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="J" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="K" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="L" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="M" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="N" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Ñ" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="O" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="P" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Q" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="R" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="S" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="T" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="U" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="V" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="W" GridPane.columnIndex="7" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="X" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Y" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Z" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                  <Button mnemonicParsing="false" onAction="#checkLetter" prefWidth="30.0" text="Z" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="I" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="J" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="K" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="L" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="M" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="N" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="Ñ" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="O" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="P" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="Q" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="R" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="S" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="T" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="U" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="V" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="W" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="X" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="Y" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#checkLetter"  text="Z" GridPane.columnIndex="4" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </children>
       </VBox>
+      </children>
+    </VBox>
+
+    <!-- Overlay moderno para fin de partida -->
+    <StackPane fx:id="resultadoOverlay"
+               visible="false"
+               mouseTransparent="true"
+               opacity="0.0"
+               styleClass="resultado-overlay">
+      <children>
+        <VBox fx:id="resultadoCard"
+              alignment="CENTER"
+              maxWidth="356.0"
+              prefWidth="356.0"
+              spacing="10.0"
+              styleClass="resultado-card">
+          <children>
+            <ImageView fx:id="resultadoIcono"
+                       fitHeight="92.0"
+                       fitWidth="92.0"
+                       pickOnBounds="true"
+                       preserveRatio="true" />
+
+            <Label fx:id="resultadoTitulo"
+                   alignment="CENTER"
+                   maxWidth="330.0"
+                   text="Fin de la partida"
+                   textAlignment="CENTER"
+                   wrapText="true"
+                   styleClass="resultado-titulo" />
+
+            <Label fx:id="resultadoMensaje"
+                   alignment="CENTER"
+                   maxWidth="310.0"
+                   text="La palabra era"
+                   textAlignment="CENTER"
+                   wrapText="true"
+                   styleClass="resultado-mensaje" />
+
+            <Label fx:id="resultadoPalabra"
+                   alignment="CENTER"
+                   maxWidth="320.0"
+                   text="ESTADOS UNIDOS"
+                   textAlignment="CENTER"
+                   wrapText="true"
+                   styleClass="resultado-palabra" />
+
+            <HBox alignment="CENTER" spacing="10.0">
+              <VBox.margin>
+                <Insets top="10.0" />
+              </VBox.margin>
+              <children>
+                <Button mnemonicParsing="false"
+                        onAction="#reiniciarDesdeResultado"
+                        text="Jugar de nuevo"
+                        styleClass="boton-dialogo, boton-dialogo-principal" />
+                <Button mnemonicParsing="false"
+                        onAction="#cerrarResultado"
+                        text="Cerrar"
+                        styleClass="boton-dialogo, boton-dialogo-secundario" />
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
+
+    <!-- Overlay moderno para arriesgar una respuesta -->
+    <StackPane fx:id="arriesgarOverlay"
+               visible="false"
+               mouseTransparent="true"
+               opacity="0.0"
+               styleClass="arriesgar-overlay">
+      <children>
+        <VBox fx:id="arriesgarCard"
+              alignment="CENTER"
+              maxWidth="372.0"
+              prefWidth="372.0"
+              spacing="12.0"
+              styleClass="arriesgar-card">
+          <children>
+            <Label text="ARRIESGAR RESPUESTA"
+                   styleClass="arriesgar-etiqueta" />
+
+            <Label text="¿Cuál pensás que es la respuesta?"
+                   alignment="CENTER"
+                   maxWidth="330.0"
+                   textAlignment="CENTER"
+                   wrapText="true"
+                   styleClass="arriesgar-titulo" />
+
+            <Label text="Escribila completa. No hace falta respetar mayúsculas, tildes ni signos."
+                   alignment="CENTER"
+                   maxWidth="320.0"
+                   textAlignment="CENTER"
+                   wrapText="true"
+                   styleClass="arriesgar-descripcion" />
+
+            <TextField fx:id="arriesgarCampo"
+                       maxWidth="318.0"
+                       onAction="#confirmarArriesgar"
+                       promptText="Escribí tu respuesta..."
+                       styleClass="arriesgar-campo">
+              <VBox.margin>
+                <Insets top="4.0" />
+              </VBox.margin>
+            </TextField>
+
+            <Label text="Si la respuesta no es correcta, la partida termina."
+                   alignment="CENTER"
+                   maxWidth="318.0"
+                   textAlignment="CENTER"
+                   wrapText="true"
+                   styleClass="arriesgar-advertencia" />
+
+            <HBox alignment="CENTER" spacing="10.0">
+              <VBox.margin>
+                <Insets top="6.0" />
+              </VBox.margin>
+              <children>
+                <Button fx:id="btnConfirmarArriesgar"
+                        disable="true"
+                        mnemonicParsing="false"
+                        onAction="#confirmarArriesgar"
+                        text="Arriesgar"
+                        styleClass="boton-dialogo, boton-dialogo-principal" />
+                <Button mnemonicParsing="false"
+                        onAction="#cancelarArriesgar"
+                        text="Cancelar"
+                        styleClass="boton-dialogo, boton-dialogo-secundario" />
+              </children>
+            </HBox>
+
+            <Label text="Enter para confirmar  ·  Esc para cancelar"
+                   styleClass="arriesgar-atajos" />
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
+
+
+    <!-- Overlay Cómo jugar -->
+    <StackPane fx:id="comoJugarOverlay"
+               visible="false"
+               mouseTransparent="true"
+               opacity="0.0"
+               styleClass="ayuda-overlay">
+      <children>
+        <VBox fx:id="comoJugarCard"
+              alignment="TOP_CENTER"
+              maxWidth="420.0"
+              prefWidth="420.0"
+              prefHeight="650.0"
+              spacing="10.0"
+              styleClass="ayuda-card">
+          <children>
+            <Label text="CÓMO JUGAR"
+                   styleClass="ayuda-etiqueta" />
+
+            <HBox alignment="CENTER_LEFT" spacing="14.0" maxWidth="374.0">
+              <children>
+                <ImageView fitHeight="80.0"
+                           fitWidth="80.0"
+                           pickOnBounds="true"
+                           preserveRatio="true"
+                           smooth="true">
+                  <image>
+                    <Image url="@images/100.png" />
+                  </image>
+                </ImageView>
+                <VBox alignment="CENTER_LEFT" spacing="3.0">
+                  <children>
+                    <Label text="Ahorcado" styleClass="ayuda-titulo" />
+                    <Label text="Guía rápida de la partida" styleClass="ayuda-subtitulo" />
+                  </children>
+                </VBox>
+              </children>
+            </HBox>
+
+            <ScrollPane fitToWidth="true"
+                        hbarPolicy="NEVER"
+                        maxWidth="382.0"
+                        prefHeight="455.0"
+                        styleClass="ayuda-scroll">
+              <content>
+                <VBox spacing="13.0" styleClass="ayuda-contenido">
+                  <children>
+                    <VBox spacing="4.0" styleClass="ayuda-seccion">
+                      <children>
+                        <Label text="Objetivo" styleClass="ayuda-seccion-titulo" />
+                        <Label text="Descubrí la palabra oculta antes de quedarte sin intentos o sin tiempo."
+                               wrapText="true" styleClass="ayuda-texto" />
+                      </children>
+                    </VBox>
+
+                    <VBox spacing="4.0" styleClass="ayuda-seccion">
+                      <children>
+                        <Label text="Elegir letras" styleClass="ayuda-seccion-titulo" />
+                        <Label text="Seleccioná una letra del teclado. Si está en la palabra, se revelan todas sus apariciones y la tecla queda marcada en verde. Si no está, la tecla queda marcada en rojo y el personaje avanza un paso."
+                               wrapText="true" styleClass="ayuda-texto" />
+                      </children>
+                    </VBox>
+
+                    <VBox spacing="4.0" styleClass="ayuda-seccion">
+                      <children>
+                        <Label text="Arriesgar respuesta" styleClass="ayuda-seccion-titulo" />
+                        <Label text="Podés intentar resolver la palabra completa en cualquier momento con Arriesgar. Si acertás, ganás la partida. Si la respuesta es incorrecta, la partida termina."
+                               wrapText="true" styleClass="ayuda-texto" />
+                      </children>
+                    </VBox>
+
+                    <VBox spacing="4.0" styleClass="ayuda-seccion">
+                      <children>
+                        <Label text="Tiempo" styleClass="ayuda-seccion-titulo" />
+                        <Label text="Cada partida tiene un límite de tiempo. El valor predeterminado es 30 segundos y podés elegir 15, 30, 45 o 60 segundos desde Archivo → Preferencias."
+                               wrapText="true" styleClass="ayuda-texto" />
+                      </children>
+                    </VBox>
+
+                    <VBox spacing="4.0" styleClass="ayuda-seccion">
+                      <children>
+                        <Label text="Categorías" styleClass="ayuda-seccion-titulo" />
+                        <Label text="Desde Archivo → Preferencias podés jugar con Países, Ciudades, Marcas de autos o Bandas de Rock. Países es la categoría predeterminada."
+                               wrapText="true" styleClass="ayuda-texto" />
+                      </children>
+                    </VBox>
+
+                    <VBox spacing="4.0" styleClass="ayuda-seccion">
+                      <children>
+                        <Label text="Tildes y nombres compuestos" styleClass="ayuda-seccion-titulo" />
+                        <Label text="No necesitás escribir tildes para acertar. Por ejemplo, A también descubre Á. Los espacios, guiones, apóstrofes y otros signos se muestran automáticamente. Al arriesgar una respuesta completa también podés omitir esos signos."
+                               wrapText="true" styleClass="ayuda-texto" />
+                      </children>
+                    </VBox>
+
+                    <VBox spacing="4.0" styleClass="ayuda-seccion">
+                      <children>
+                        <Label text="Controles" styleClass="ayuda-seccion-titulo" />
+                        <Label text="Jugar inicia una nueva partida. Detener termina la partida actual. Arriesgar permite escribir la respuesta completa. Salir cierra la aplicación."
+                               wrapText="true" styleClass="ayuda-texto" />
+                      </children>
+                    </VBox>
+                  </children>
+                </VBox>
+              </content>
+            </ScrollPane>
+
+            <Button mnemonicParsing="false"
+                    onAction="#cerrarComoJugar"
+                    text="Cerrar"
+                    styleClass="boton-dialogo, boton-dialogo-principal">
+              <VBox.margin>
+                <Insets top="2.0" />
+              </VBox.margin>
+            </Button>
+
+            <Label text="Esc para cerrar" styleClass="ayuda-atajo" />
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
+
+    <!-- Overlay Acerca de -->
+    <StackPane fx:id="acercaOverlay"
+               visible="false"
+               mouseTransparent="true"
+               opacity="0.0"
+               styleClass="acerca-overlay">
+      <children>
+        <VBox fx:id="acercaCard"
+              alignment="CENTER"
+              maxWidth="372.0"
+              prefWidth="372.0"
+              spacing="11.0"
+              styleClass="acerca-card">
+          <children>
+            <Label text="ACERCA DE"
+                   styleClass="acerca-etiqueta" />
+
+            <ImageView fitHeight="125.0"
+                       fitWidth="125.0"
+                       pickOnBounds="true"
+                       preserveRatio="true"
+                       smooth="true">
+              <image>
+                <Image url="@images/100.png" />
+              </image>
+            </ImageView>
+
+            <Label text="Ahorcado"
+                   alignment="CENTER"
+                   maxWidth="330.0"
+                   textAlignment="CENTER"
+                   styleClass="acerca-titulo" />
+
+            <Label text="Versión 1.0.0"
+                   alignment="CENTER"
+                   styleClass="acerca-version" />
+
+            <Label text="Ahorcado - Copyright (c) 1996-2026 Mario Borelli"
+                   alignment="CENTER"
+                   maxWidth="320.0"
+                   textAlignment="CENTER"
+                   wrapText="true"
+                   styleClass="acerca-copyright" />
+
+            <Button mnemonicParsing="false"
+                    onAction="#cerrarAcercaDe"
+                    text="Cerrar"
+                    styleClass="boton-dialogo, boton-dialogo-principal">
+              <VBox.margin>
+                <Insets top="8.0" />
+              </VBox.margin>
+            </Button>
+
+            <Label text="Esc para cerrar"
+                   styleClass="acerca-atajo" />
+          </children>
+        </VBox>
+      </children>
+    </StackPane>
   </children>
-</VBox>
+</StackPane>

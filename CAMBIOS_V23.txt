@@ -1,0 +1,17 @@
+AHORCADO V23 - CORRECCION DE ICONO LINUX EN EJECUCION
+
+- Basado en Ahorcado V22 / aplicacion 1.0.0.
+- Corregida la asociacion entre el lanzador del menu y la ventana JavaFX en GNOME.
+- WM_CLASS real validado en Linux:
+    com.llorieb.ahorcado.Main
+- Agregado packaging/linux/Ahorcado.desktop con:
+    StartupWMClass=com.llorieb.ahorcado.Main
+- 02-crear-deb.sh usa ahora --resource-dir packaging/linux para que jpackage
+  incluya el .desktop personalizado dentro del instalador.
+- El script verifica automaticamente el .deb generado y falla si el
+  StartupWMClass correcto no esta presente.
+- Revision Debian incrementada de 1 a 2. El programa sigue siendo Ahorcado
+  1.0.0, pero el paquete pasa de 1.0.0-1 a 1.0.0-2 para permitir una
+  actualizacion limpia sobre la instalacion anterior.
+- No fue necesario modificar la logica JavaFX ni Main.java: la aplicacion ya
+  expone el WM_CLASS correcto; faltaba declararlo en el lanzador Linux.

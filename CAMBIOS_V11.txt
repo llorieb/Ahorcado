@@ -1,0 +1,15 @@
+Ahorcado v11 - corrección primera reproducción del sonido de error
+
+- La letra incorrecta ahora usa JavaFX AudioClip en lugar de MediaPlayer.
+- AudioClip está orientado a efectos breves y de baja latencia y evita perder
+  el ataque del WAV durante la primera reproducción de la aplicación.
+- El sonido mantiene el volumen de 72%.
+- El flash rojo empieza inmediatamente y dura 250 ms, prácticamente la misma
+  duración que wrong_letter_soft_bup.wav (240 ms).
+- El efecto visual usa PauseTransition: no bloquea el hilo de JavaFX.
+- El sonido de fin/timeout sigue usando MediaPlayer al 88%, porque sus callbacks
+  permiten sincronizar exactamente la aparición del overlay con el audio.
+- Al iniciar/detener una partida o cerrar la aplicación se cancela cualquier
+  efecto corto pendiente y se restaura el fondo.
+
+Base: Ahorcado v10 - tiempo configurable.

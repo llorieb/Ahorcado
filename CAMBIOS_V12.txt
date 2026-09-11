@@ -1,0 +1,7 @@
+Ahorcado v12 - Precalentamiento de audio
+
+- Mantiene AudioClip para wrong_letter_soft_bup.wav.
+- Después de mostrar la ventana se reproduce una vez el mismo clip a volumen 0.0001.
+- Esta reproducción inaudible precalienta el motor/dispositivo de audio de JavaFX/Windows.
+- La primera equivocación real debería reproducir el WAV completo desde el ataque.
+- El resto de la versión 11 se mantiene sin cambios.

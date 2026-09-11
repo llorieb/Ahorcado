@@ -1,0 +1,21 @@
+AHORCADO V20 - CORPUS COMPLETO Y CONTROL DE DIFICULTAD
+======================================================
+
+- Base ampliada a 548 respuestas únicas:
+  * 195 Países
+  * 150 Ciudades
+  * 62 Marcas de autos
+  * 141 Bandas de Rock
+- Base SQLite actualizada a user_version = 4.
+- Índice único por categoría + palabra para impedir duplicados.
+- Migración automática de bases locales anteriores, preservando palabras
+  personalizadas.
+- Correcciones de ortografía y duplicados históricos.
+- Nuevo recurso palabras_v20.tsv como fuente de migración mantenible.
+- script.sql actualizado con el corpus completo.
+- El área de palabra activa un modo compacto global sólo cuando una frase
+  requeriría más de dos líneas.
+- Nuevo modo muy compacto para tokens excepcionales de más de 13 caracteres.
+- Arriesgar una respuesta ahora ignora también espacios y puntuación.
+- Textos de ayuda y del overlay Arriesgar actualizados.
+- Se incluye AUDITORIA_BASE_V20.txt con criterios y casos difíciles.

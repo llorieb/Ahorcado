@@ -1,0 +1,13 @@
+AHORCADO V16 - OVERLAY ARRIESGAR
+
+- Reemplazado TextInputDialog por overlay integrado.
+- Fondo oscurecido y tarjeta coherente con resultados.
+- Animación fade + scale de entrada y salida.
+- Foco automático en el campo.
+- Enter confirma; Escape cancela.
+- Botón Arriesgar deshabilitado si el campo está vacío.
+- Se aceptan letras, números y signos hasta 60 caracteres para soportar nombres como U2, AC/DC o R.E.M.
+- La comparación mantiene normalización de mayúsculas y tildes.
+- Respuesta correcta: overlay de victoria + sonido glass ascent.
+- Respuesta incorrecta: termina la partida y muestra overlay de derrota específico + sonido glass descent.
+- Si se agota el tiempo mientras el overlay está abierto, éste se cierra y aparece el resultado de timeout.

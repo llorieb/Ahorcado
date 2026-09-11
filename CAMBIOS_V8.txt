@@ -1,0 +1,17 @@
+Ahorcado v8 - Sonido moderno y sincronizado
+
+Cambios principales:
+- Letra incorrecta: wrong_letter_soft_bup.wav
+  - Volumen configurado al 72%.
+  - El fondo rojo comienza exactamente cuando el sonido entra en PLAYING.
+  - El fondo vuelve a su estado normal al finalizar el WAV (0,24 s).
+  - No se bloquea el hilo de JavaFX.
+
+- Fin de partida / tiempo agotado: game_over_glass_descent.wav
+  - Volumen configurado al 88%.
+  - El MediaPlayer se crea al iniciar la aplicación para reducir latencia.
+  - La animación del overlay comienza cuando el sonido entra realmente en PLAYING.
+  - El mismo stinger se usa tanto por falta de intentos como por tiempo agotado.
+  - Al cerrar el overlay o iniciar una nueva partida, el sonido final se detiene y reinicia.
+
+Los antiguos error.wav y lose.wav fueron retirados porque ya no se utilizan.

@@ -1,0 +1,8 @@
+AHORCADO V19 - AYUDA INTEGRADA
+
+- Ayuda > Indice fue renombrado a Ayuda > Cómo jugar.
+- Se agregó un overlay de ayuda interno, sin navegador ni WebView.
+- La ayuda explica objetivo, letras, Arriesgar, tiempo, categorías, tildes y controles.
+- El contenido es desplazable para mantener compatibilidad con Windows y Linux.
+- Esc y el botón Cerrar cierran la ayuda.
+- Si hay una partida en curso, el temporizador se pausa mientras la ayuda está abierta y continúa al cerrarla.
