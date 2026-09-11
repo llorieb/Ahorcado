@@ -1,9 +1,0 @@
-Ahorcado v14 - Sonido de victoria integrado
-
-- Integra victory_glass_ascent.wav al flujo real de victoria.
-- La victoria usa un MediaPlayer independiente del sonido de derrota/timeout.
-- Volumen de victoria: 86%.
-- El overlay de victoria comienza su animación cuando el sonido entra realmente en PLAYING.
-- Si el audio falla, el overlay igualmente aparece como fallback.
-- Al cerrar el overlay, iniciar otra partida o cerrar la aplicación se detienen y reinician ambos sonidos de resultado.
-- Se conserva el precalentamiento de AudioClip para el sonido de letra equivocada.

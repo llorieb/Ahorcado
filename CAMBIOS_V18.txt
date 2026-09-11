@@ -1,8 +1,0 @@
-AHORCADO V18 - ICONO DE APLICACION
-
-- Nuevo app-icon.png basado en el personaje 100.png.
-- Nuevo app-icon.ico multiresolucion para Windows.
-- Main.java configura app-icon.png como icono del Stage.
-- build-windows.bat pasa app-icon.ico a jpackage mediante --icon.
-- El mismo diseño queda preparado para ventana, barra de tareas,
-  ejecutable, acceso directo e instalador.
