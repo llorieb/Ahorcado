@@ -65,18 +65,104 @@ Las versiones compiladas se publican en la sección **Releases** del repositorio
 
 ### Windows
 
-Disponible como instalador `.exe` autocontenido.
+Archivo:
+
+`Ahorcado-1.0.0.exe`
+
+Instalador autocontenido para Windows de 64 bits.
 
 El instalador incluye el runtime necesario, por lo que **no es necesario instalar Java**.
 
 ### Linux
 
-Disponible en dos formatos:
+Archivo:
 
-- paquete `.deb` para Debian, Ubuntu, Linux Mint y distribuciones derivadas;
-- versión portable `.tar.gz`.
+`ahorcado_1.0.0-2_amd64.deb`
 
-Ambas versiones incluyen su propio runtime Java.
+Paquete para sistemas Linux x86-64 basados en Debian, incluyendo Debian, Ubuntu, Linux Mint y distribuciones derivadas.
+
+Incluye su propio runtime Java.
+
+---
+
+# Instalación
+
+## Windows
+
+1. Descargá `Ahorcado-1.0.0.exe` desde la sección **Releases**.
+2. Hacé doble clic sobre el archivo descargado.
+3. Seguí los pasos del instalador.
+4. Al finalizar, podrás ejecutar **Ahorcado** desde el menú Inicio o desde el acceso directo creado por el instalador.
+
+### Advertencia de Microsoft Defender SmartScreen
+
+Esta primera versión no utiliza un certificado comercial de firma de código, por lo que Windows puede mostrar una advertencia de Microsoft Defender SmartScreen.
+
+Si descargaste Ahorcado desde este repositorio oficial:
+
+1. Seleccioná **Más información**.
+2. Elegí **Ejecutar de todas formas**.
+
+## Linux
+
+### Instalación gráfica
+
+En la mayoría de las distribuciones compatibles:
+
+1. Descargá `ahorcado_1.0.0-2_amd64.deb`.
+2. Hacé doble clic sobre el archivo.
+3. Abrilo con el instalador de software de tu distribución.
+4. Seleccioná **Instalar**.
+5. Introducí tu contraseña si el sistema la solicita.
+
+Una vez instalado, **Ahorcado aparecerá en el menú de aplicaciones**.
+
+### Instalación desde Terminal
+
+Abrí una terminal en la carpeta donde descargaste el archivo y ejecutá:
+
+```bash
+sudo apt install ./ahorcado_1.0.0-2_amd64.deb
+```
+
+Es importante mantener el `./` delante del nombre del archivo para indicar que se trata de un paquete local.
+
+### Desinstalación
+
+Para eliminar Ahorcado:
+
+```bash
+sudo apt remove ahorcado
+```
+
+---
+
+## Requisitos del sistema
+
+### Windows
+
+- Windows de 64 bits.
+- Arquitectura x86-64.
+- No requiere una instalación independiente de Java.
+
+### Linux
+
+- Linux x86-64.
+- Debian, Ubuntu, Linux Mint o una distribución compatible con paquetes `.deb`.
+- No requiere una instalación independiente de Java.
+
+### Pantalla
+
+La interfaz de Ahorcado está pensada para utilizarse en una ventana de escritorio de aproximadamente **480 × 785 píxeles**.
+
+Para visualizarla cómodamente, se recomienda:
+
+- una resolución de pantalla de **1280 × 900 o superior**;
+- disponer de aproximadamente **800 píxeles de altura útil** para la ventana.
+
+En pantallas con menor altura disponible, la interfaz puede quedar ajustada por las barras y decoraciones del sistema operativo.
+
+---
 
 ## Compilar desde el código fuente
 
@@ -127,6 +213,8 @@ También puede realizarse todo el proceso con:
 
 Para generar el paquete `.deb` se requieren las herramientas estándar de empaquetado de Debian, incluyendo `dpkg-deb` y `fakeroot`.
 
+---
+
 ## Tecnologías utilizadas
 
 - Java 17
@@ -151,6 +239,12 @@ src/
 │       ├── AhorcadoLayout.fxml
 │       └── ahorcado.db
 ```
+
+## Funcionamiento offline
+
+Ahorcado funciona completamente **offline**.
+
+No necesita conexión a Internet para jugar y la base de palabras está incluida en la aplicación.
 
 ## Autor
 

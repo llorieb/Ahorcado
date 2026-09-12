@@ -1,0 +1,31 @@
+ARCHIVOS PARA GITHUB PAGES — AHORCADO 1.0.0
+
+Copiar dentro de la carpeta docs/ del repositorio:
+
+- index.html
+- style.css
+- site.js
+- app-icon.png
+- .nojekyll
+
+Ya deben existir allí:
+- screenshot-main.png
+- screenshot-time.png
+
+Estructura final:
+
+docs/
+├── .nojekyll
+├── app-icon.png
+├── index.html
+├── screenshot-main.png
+├── screenshot-time.png
+├── site.js
+└── style.css
+
+Los enlaces a Windows y Linux se construyen automáticamente a partir
+de la URL de GitHub Pages y apuntan al Release v1.0.0.
+
+Assets esperados en el Release:
+- Ahorcado-1.0.0.exe
+- ahorcado_1.0.0-2_amd64.deb

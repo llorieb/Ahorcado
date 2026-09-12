@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ahorcado 1.0.0: el clásico juego de palabras para Windows y Linux. Más de 500 palabras, cuatro categorías, tiempo configurable y funcionamiento offline.">
+  <meta name="theme-color" content="#0f172a">
+  <title>Ahorcado — Juego para Windows y Linux</title>
+  <link rel="icon" type="image/png" href="app-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Ahorcado, volver al inicio">
+      <img src="app-icon.png" alt="" width="42" height="42">
+      <span>Ahorcado</span>
+    </a>
+
+    <nav aria-label="Navegación principal">
+      <a href="#caracteristicas">Características</a>
+      <a href="#capturas">Capturas</a>
+      <a href="#requisitos">Requisitos</a>
+      <a id="nav-source" href="#" target="_blank" rel="noopener">Código</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-copy">
+        <div class="eyebrow">VERSIÓN 1.0.0 · WINDOWS + LINUX</div>
+        <h1>El clásico Ahorcado,<br><span>renovado para escritorio.</span></h1>
+
+        <p class="hero-lead">
+          Más de 500 palabras y nombres, cuatro categorías, tiempo configurable,
+          sonidos y animaciones. Todo en una aplicación simple que funciona
+          completamente offline.
+        </p>
+
+        <div class="download-row" aria-label="Descargas">
+          <a id="download-windows" class="button primary" href="#">
+            <span class="button-icon" aria-hidden="true">⊞</span>
+            <span>
+              <small>Descargar para</small>
+              <strong>Windows</strong>
+            </span>
+          </a>
+
+          <a id="download-linux" class="button secondary" href="#">
+            <span class="button-icon linux-icon" aria-hidden="true">◆</span>
+            <span>
+              <small>Descargar para</small>
+              <strong>Linux</strong>
+            </span>
+          </a>
+        </div>
+
+        <p class="download-note">
+          Instaladores autocontenidos · No requiere instalar Java · Gratis
+        </p>
+
+        <div class="hero-links">
+          <a id="release-link" href="#" target="_blank" rel="noopener">Ver Release v1.0.0</a>
+          <span aria-hidden="true">·</span>
+          <a href="#instalacion">Cómo instalar</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="icon-glow" aria-hidden="true"></div>
+        <img class="hero-icon" src="app-icon.png" alt="Personaje de Ahorcado">
+        <div class="floating-card card-one">
+          <strong>4 categorías</strong>
+          <span>Países · Ciudades · Autos · Rock</span>
+        </div>
+        <div class="floating-card card-two">
+          <strong>100% offline</strong>
+          <span>Jugá sin conexión</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip" aria-label="Resumen del producto">
+      <div><strong>500+</strong><span>palabras y nombres</span></div>
+      <div><strong>4</strong><span>categorías</span></div>
+      <div><strong>15–60 s</strong><span>tiempo configurable</span></div>
+      <div><strong>0</strong><span>conexión requerida</span></div>
+    </section>
+
+    <section class="section" id="caracteristicas">
+      <div class="section-heading">
+        <span>CARACTERÍSTICAS</span>
+        <h2>Simple para empezar.<br>Con detalles para seguir jugando.</h2>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-symbol">A</div>
+          <h3>Cuatro categorías</h3>
+          <p>Países, ciudades, marcas de autos y bandas de rock en una base cuidadosamente curada.</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-symbol">30</div>
+          <h3>Contra reloj</h3>
+          <p>Elegí partidas de 15, 30, 45 o 60 segundos y seguí el avance visual del tiempo.</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-symbol">?</div>
+          <h3>Arriesgá la respuesta</h3>
+          <p>Podés resolver letra por letra o intentar la palabra o frase completa cuando quieras.</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-symbol">Ñ</div>
+          <h3>Idioma bien cuidado</h3>
+          <p>Acentos, diéresis, eñes y caracteres especiales forman parte natural del juego.</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-symbol">♪</div>
+          <h3>Sonidos y animaciones</h3>
+          <p>Feedback visual y sonoro para errores, victoria, derrota y fin de tiempo.</p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-symbol">↺</div>
+          <h3>Preferencias persistentes</h3>
+          <p>El juego recuerda tu categoría y tiempo elegidos para la próxima partida.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section screenshots-section" id="capturas">
+      <div class="section-heading">
+        <span>CAPTURAS</span>
+        <h2>Así se ve Ahorcado.</h2>
+        <p>Una interfaz compacta y clara, pensada para jugar sin distracciones.</p>
+      </div>
+
+      <div class="screenshots">
+        <figure class="shot-card">
+          <a href="screenshot-main.png" target="_blank">
+            <img src="screenshot-main.png" alt="Pantalla principal de Ahorcado" loading="lazy">
+          </a>
+          <figcaption>Pantalla principal</figcaption>
+        </figure>
+
+        <figure class="shot-card">
+          <a href="screenshot-time.png" target="_blank">
+            <img src="screenshot-time.png" alt="Ahorcado durante una partida con tiempo configurable" loading="lazy">
+          </a>
+          <figcaption>Partida con tiempo configurable</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section install-section" id="instalacion">
+      <div class="section-heading">
+        <span>INSTALACIÓN</span>
+        <h2>Descargá y jugá.</h2>
+      </div>
+
+      <div class="install-grid">
+        <article class="install-card">
+          <div class="platform-heading">
+            <div class="platform-icon">⊞</div>
+            <div>
+              <h3>Windows</h3>
+              <p>64 bits · x86-64</p>
+            </div>
+          </div>
+
+          <ol>
+            <li>Descargá <code>Ahorcado-1.0.0.exe</code>.</li>
+            <li>Hacé doble clic y seguí los pasos del instalador.</li>
+            <li>Abrí Ahorcado desde Inicio o desde el acceso directo.</li>
+          </ol>
+
+          <div class="notice">
+            <strong>SmartScreen</strong>
+            <p>
+              Al no utilizar todavía un certificado comercial de firma,
+              Windows puede mostrar una advertencia. Desde este repositorio oficial,
+              elegí <em>Más información → Ejecutar de todas formas</em>.
+            </p>
+          </div>
+        </article>
+
+        <article class="install-card">
+          <div class="platform-heading">
+            <div class="platform-icon">◆</div>
+            <div>
+              <h3>Linux</h3>
+              <p>Debian / Ubuntu / Mint · x86-64</p>
+            </div>
+          </div>
+
+          <ol>
+            <li>Descargá <code>ahorcado_1.0.0-2_amd64.deb</code>.</li>
+            <li>Abrilo con el instalador de software de tu distribución.</li>
+            <li>Ahorcado aparecerá en el menú de aplicaciones.</li>
+          </ol>
+
+          <div class="terminal-box">
+            <span>O desde Terminal:</span>
+            <code>sudo apt install ./ahorcado_1.0.0-2_amd64.deb</code>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section requirements-section" id="requisitos">
+      <div class="section-heading">
+        <span>REQUISITOS</span>
+        <h2>Liviano y autocontenido.</h2>
+      </div>
+
+      <div class="requirements-grid">
+        <div>
+          <h3>Windows</h3>
+          <p>Windows de 64 bits · x86-64</p>
+        </div>
+        <div>
+          <h3>Linux</h3>
+          <p>Debian, Ubuntu, Linux Mint o compatible con paquetes .deb · x86-64</p>
+        </div>
+        <div>
+          <h3>Pantalla</h3>
+          <p>Recomendado: 1280 × 900 o superior, con aproximadamente 800 px de altura útil.</p>
+        </div>
+        <div>
+          <h3>Java</h3>
+          <p>No necesitás instalarlo. Cada distribución incluye su propio runtime.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <img src="app-icon.png" alt="" width="92" height="92">
+      <div>
+        <span>AHORCADO 1.0.0</span>
+        <h2>¿Una partida?</h2>
+        <p>Elegí tu sistema operativo y empezá a jugar.</p>
+      </div>
+      <div class="final-buttons">
+        <a id="download-windows-bottom" class="button primary compact" href="#">Windows</a>
+        <a id="download-linux-bottom" class="button secondary compact" href="#">Linux</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <strong>Ahorcado</strong>
+      <span>Copyright © 1996–2026 Mario Borelli</span>
+    </div>
+    <div class="footer-links">
+      <a id="footer-release" href="#" target="_blank" rel="noopener">Release v1.0.0</a>
+      <a id="footer-source" href="#" target="_blank" rel="noopener">Código fuente</a>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+</body>
+</html>
