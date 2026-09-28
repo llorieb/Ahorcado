@@ -1,7 +1,7 @@
 (() => {
-  const WINDOWS_FILE = "Ahorcado-1.0.0.exe";
-  const LINUX_FILE = "ahorcado_1.0.0-2_amd64.deb";
-  const VERSION = "v1.0.0";
+  const WINDOWS_FILE = "Ahorcado-1.0.1.exe";
+  const LINUX_FILE = "ahorcado_1.0.1-1_amd64.deb";
+  const VERSION = "v1.0.1";
 
   function githubCoordinates() {
     const host = window.location.hostname.toLowerCase();

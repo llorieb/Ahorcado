@@ -1,4 +1,4 @@
-# Ahorcado 1.0.0 - Build para Linux
+# Ahorcado 1.0.1 - Build para Linux
 
 Esta version permite generar en Linux dos formatos de distribucion:
 
@@ -88,7 +88,7 @@ target/installer-linux/
 Su nombre sera similar a:
 
 ```text
-ahorcado_1.0.0-2_amd64.deb
+ahorcado_1.0.1-1_amd64.deb
 ```
 
 ## Instalar el .deb
@@ -109,12 +109,12 @@ StartupWMClass=com.llorieb.ahorcado.Main
 
 Esto hace que GNOME asocie correctamente la ventana JavaFX en ejecucion con Ahorcado y muestre el icono del personaje en el dock/barra de tareas, en lugar del icono generico de engranaje.
 
-## Actualizar desde el paquete 1.0.0-1
+## Actualizar desde el paquete 1.0.0-2
 
-La correccion del icono usa la revision Debian `1.0.0-2`, por lo que puede instalarse directamente sobre la anterior:
+La version `1.0.1-1` puede instalarse directamente sobre `1.0.0-2`:
 
 ```bash
-sudo apt install ./target/installer-linux/ahorcado_1.0.0-2_amd64.deb
+sudo apt install ./target/installer-linux/ahorcado_1.0.1-1_amd64.deb
 ```
 
 No es necesario desinstalar primero Ahorcado.

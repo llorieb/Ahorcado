@@ -1,4 +1,4 @@
-# Ahorcado 1.0.0 - Ejecutable e instalador Windows
+# Ahorcado 1.0.1 - Ejecutable e instalador Windows
 
 Esta version genera **dos entregables**:
 
@@ -11,7 +11,7 @@ target\portable\Ahorcado\Ahorcado.exe
 2. Un instalador nativo de Windows:
 
 ```text
-target\installer\Ahorcado-1.0.0.exe
+target\installer\Ahorcado-1.0.1.exe
 ```
 
 El usuario final **no necesita instalar Java, JavaFX, Maven ni WiX**.
@@ -90,7 +90,7 @@ target\installer
 La configuracion del instalador incluye:
 
 - Nombre: Ahorcado
-- Version: 1.0.0
+- Version: 1.0.1
 - Autor/Vendor: Mario Borelli
 - Copyright: Copyright (c) 1996-2026 Mario Borelli
 - Icono definitivo del personaje

@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <strong>Versión 1.0.0</strong> · Windows · Linux
+  <strong>Versión 1.0.1</strong> · Windows · Linux
 </p>
 
 ---
@@ -33,6 +33,7 @@ El objetivo es descubrir la palabra o frase antes de agotar los intentos o el ti
 - Manejo de acentos, diéresis, eñes y otros caracteres especiales.
 - Sonidos para errores, victoria y derrota.
 - Animaciones e interfaz gráfica moderna.
+- Interfaz adaptable al área útil de pantalla y al escalado del sistema operativo.
 - Preferencias persistentes entre partidas.
 - Ayuda integrada dentro de la aplicación.
 - Base de datos SQLite incluida.
@@ -67,7 +68,7 @@ Las versiones compiladas se publican en la sección **Releases** del repositorio
 
 Archivo:
 
-`Ahorcado-1.0.0.exe`
+`Ahorcado-1.0.1.exe`
 
 Instalador autocontenido para Windows de 64 bits.
 
@@ -77,7 +78,7 @@ El instalador incluye el runtime necesario, por lo que **no es necesario instala
 
 Archivo:
 
-`ahorcado_1.0.0-2_amd64.deb`
+`ahorcado_1.0.1-1_amd64.deb`
 
 Paquete para sistemas Linux x86-64 basados en Debian, incluyendo Debian, Ubuntu, Linux Mint y distribuciones derivadas.
 
@@ -89,14 +90,14 @@ Incluye su propio runtime Java.
 
 ## Windows
 
-1. Descargá `Ahorcado-1.0.0.exe` desde la sección **Releases**.
+1. Descargá `Ahorcado-1.0.1.exe` desde la sección **Releases**.
 2. Hacé doble clic sobre el archivo descargado.
 3. Seguí los pasos del instalador.
 4. Al finalizar, podrás ejecutar **Ahorcado** desde el menú Inicio o desde el acceso directo creado por el instalador.
 
 ### Advertencia de Microsoft Defender SmartScreen
 
-Esta primera versión no utiliza un certificado comercial de firma de código, por lo que Windows puede mostrar una advertencia de Microsoft Defender SmartScreen.
+Esta versión no utiliza un certificado comercial de firma de código, por lo que Windows puede mostrar una advertencia de Microsoft Defender SmartScreen.
 
 Si descargaste Ahorcado desde este repositorio oficial:
 
@@ -109,7 +110,7 @@ Si descargaste Ahorcado desde este repositorio oficial:
 
 En la mayoría de las distribuciones compatibles:
 
-1. Descargá `ahorcado_1.0.0-2_amd64.deb`.
+1. Descargá `ahorcado_1.0.1-1_amd64.deb`.
 2. Hacé doble clic sobre el archivo.
 3. Abrilo con el instalador de software de tu distribución.
 4. Seleccioná **Instalar**.
@@ -122,7 +123,7 @@ Una vez instalado, **Ahorcado aparecerá en el menú de aplicaciones**.
 Abrí una terminal en la carpeta donde descargaste el archivo y ejecutá:
 
 ```bash
-sudo apt install ./ahorcado_1.0.0-2_amd64.deb
+sudo apt install ./ahorcado_1.0.1-1_amd64.deb
 ```
 
 Es importante mantener el `./` delante del nombre del archivo para indicar que se trata de un paquete local.
@@ -153,14 +154,9 @@ sudo apt remove ahorcado
 
 ### Pantalla
 
-La interfaz de Ahorcado está pensada para utilizarse en una ventana de escritorio de aproximadamente **480 × 785 píxeles**.
+La interfaz de Ahorcado se adapta automáticamente al área útil disponible y al escalado configurado en el sistema operativo.
 
-Para visualizarla cómodamente, se recomienda:
-
-- una resolución de pantalla de **1280 × 900 o superior**;
-- disponer de aproximadamente **800 píxeles de altura útil** para la ventana.
-
-En pantallas con menor altura disponible, la interfaz puede quedar ajustada por las barras y decoraciones del sistema operativo.
+El diseño mantiene sus proporciones y se reduce cuando es necesario para evitar que la ventana o sus controles queden fuera de pantalla. También se reajusta automáticamente si cambia el escalado mientras la aplicación está abierta.
 
 ---
 

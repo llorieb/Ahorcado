@@ -14,7 +14,7 @@ CAMBIOS DE INTERFAZ INCLUIDOS
 - Una celda visual por letra.
 - Letras descubiertas resaltadas en azul claro.
 - Soporte visual para palabras con espacios y para nombres largos mediante FlowPane.
-- Ventana ampliada a 735 px de alto para conservar márgenes y respiración visual.
+- Interfaz adaptable al área útil de pantalla y al escalado configurado en el sistema operativo.
 
 MEJORA DE TECLADO (v4)
 -----------------------

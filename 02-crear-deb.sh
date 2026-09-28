@@ -14,7 +14,7 @@ mkdir -p target/installer-linux
 
 echo
 echo "============================================================"
-echo "  Creando instalador Debian Ahorcado 1.0.0 (release 2)"
+echo "  Creando instalador Debian Ahorcado 1.0.1 (release 1)"
 echo "============================================================"
 
 # El recurso Ahorcado.desktop personaliza el lanzador creado por jpackage.
@@ -23,7 +23,7 @@ echo "============================================================"
 jpackage \
   --type deb \
   --name Ahorcado \
-  --app-version 1.0.0 \
+  --app-version 1.0.1 \
   --vendor "Mario Borelli" \
   --copyright "Copyright (c) 1996-2026 Mario Borelli" \
   --description "Juego de Ahorcado" \
@@ -32,7 +32,7 @@ jpackage \
   --dest target/installer-linux \
   --resource-dir "packaging/linux" \
   --linux-package-name ahorcado \
-  --linux-app-release 2 \
+  --linux-app-release 1 \
   --linux-app-category games \
   --linux-menu-group "Game" \
   --linux-shortcut

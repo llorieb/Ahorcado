@@ -16,13 +16,13 @@ mkdir target\installer
 
 echo.
 echo ============================================================
-echo   Creando instalador Windows Ahorcado 1.0.0
+echo   Creando instalador Windows Ahorcado 1.0.1
 echo ============================================================
 
 jpackage ^
   --type exe ^
   --name Ahorcado ^
-  --app-version 1.0.0 ^
+  --app-version 1.0.1 ^
   --vendor "Mario Borelli" ^
   --copyright "Copyright (c) 1996-2026 Mario Borelli" ^
   --description "Juego de Ahorcado" ^
