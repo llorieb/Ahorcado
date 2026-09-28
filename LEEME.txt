@@ -1,0 +1,27 @@
+AHORCADO - VERSION CON TARJETAS Y ZONA DE PALABRA MODERNA
+
+WINDOWS
+1. Descomprimir este ZIP en una carpeta.
+2. Tener instalado JDK 17 y JAVA_HOME/PATH configurados.
+3. Ejecutar run-windows.bat.
+
+El script ejecuta: mvnw.cmd clean javafx:run
+La primera ejecución necesita conexión a Internet para descargar Maven/dependencias si todavía no están en el equipo.
+
+CAMBIOS DE INTERFAZ INCLUIDOS
+- Área superior dividida en tarjetas para personaje y reloj.
+- Zona de palabra modernizada con título de categoría.
+- Una celda visual por letra.
+- Letras descubiertas resaltadas en azul claro.
+- Soporte visual para palabras con espacios y para nombres largos mediante FlowPane.
+- Ventana ampliada a 735 px de alto para conservar márgenes y respiración visual.
+
+MEJORA DE TECLADO (v4)
+-----------------------
+- Letras disponibles: blanco con borde gris suave.
+- Hover: azul claro.
+- Pressed: azul más marcado y leve desplazamiento.
+- Letras acertadas: verde y quedan deshabilitadas.
+- Letras incorrectas: rojo y quedan deshabilitadas.
+- Los colores usados permanecen visibles aunque el botón esté deshabilitado.
+- Cada nueva partida reinicia automáticamente todos los botones.

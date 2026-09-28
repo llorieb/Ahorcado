@@ -4,13 +4,13 @@
 
 /* Letra disponible */
 .teclado .button {
-    -fx-min-width: 38px;
-    -fx-pref-width: 38px;
-    -fx-max-width: 38px;
+    -fx-min-width: 44px;
+    -fx-pref-width: 44px;
+    -fx-max-width: 44px;
 
-    -fx-min-height: 34px;
-    -fx-pref-height: 34px;
-    -fx-max-height: 34px;
+    -fx-min-height: 46px;
+    -fx-pref-height: 46px;
+    -fx-max-height: 46px;
 
     -fx-font-size: 15px;
     -fx-font-weight: bold;
