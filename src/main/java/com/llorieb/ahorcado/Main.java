@@ -46,6 +46,12 @@ public class Main extends Application {
     private static final double DPI_TOLERANCE = 0.01;
     private static final long DPI_NUDGE_COOLDOWN_NANOS = 350_000_000L;
 
+    // Mientras el usuario arrastra la ventana, cualquier cambio de Screen/DPI
+    // puede deberse simplemente al movimiento (por ejemplo al cruzar a otro
+    // monitor). Durante este breve margen nunca recentramos automáticamente.
+    private static final long USER_MOVE_GRACE_NANOS = 750_000_000L;
+    private long ultimoMovimientoUsuarioNanos = Long.MIN_VALUE;
+
     // Evita relayouts/sizeToScene innecesarios cuando la escala calculada ya
     // es la que está aplicada. Esto es especialmente importante en 125/150/175%,
     // donde Screen y Stage pueden conservar pequeñas diferencias de DPI sin que
@@ -128,29 +134,29 @@ public class Main extends Application {
         reajustePendiente = new PauseTransition(Duration.millis(120));
         reajustePendiente.setOnFinished(event -> ajustarVentanaAlAreaDisponible(false));
 
-        // Camino normal: JavaFX notifica el cambio de escala de salida.
+        // Camino normal: JavaFX notifica el cambio de escala de salida. Si el
+        // cambio ocurre mientras el usuario está arrastrando la ventana, puede
+        // tratarse de un cambio de monitor y respetamos la posición elegida.
         stage.outputScaleXProperty().addListener((obs, oldValue, newValue) -> {
-            marcarRecentradoTrasCambioDpi();
+            if (!movimientoUsuarioReciente()) {
+                marcarRecentradoTrasCambioDpi();
+            }
             invalidarMetricasPantalla();
             programarReajuste();
         });
         stage.outputScaleYProperty().addListener((obs, oldValue, newValue) -> {
-            marcarRecentradoTrasCambioDpi();
+            if (!movimientoUsuarioReciente()) {
+                marcarRecentradoTrasCambioDpi();
+            }
             invalidarMetricasPantalla();
             programarReajuste();
         });
 
-        // Si la ventana pasa a otro monitor, recalculamos también.
-        stage.xProperty().addListener((obs, oldValue, newValue) -> {
-            if (!forzandoActualizacionDpi) {
-                verificarCambiosPantalla();
-            }
-        });
-        stage.yProperty().addListener((obs, oldValue, newValue) -> {
-            if (!forzandoActualizacionDpi) {
-                verificarCambiosPantalla();
-            }
-        });
+        // Un movimiento normal de la ventana NO dispara ningún reajuste. Sólo
+        // registramos que el usuario tomó el control. Esto evita que el monitor
+        // de DPI "pelee" contra el arrastre en 125/150/175%.
+        stage.xProperty().addListener((obs, oldValue, newValue) -> registrarMovimientoUsuario());
+        stage.yProperty().addListener((obs, oldValue, newValue) -> registrarMovimientoUsuario());
 
         // Screen no expone properties individuales para sus métricas; cuando
         // cambia la configuración de monitores JavaFX actualiza su lista
@@ -162,11 +168,11 @@ public class Main extends Application {
             Platform.runLater(this::verificarCambiosPantalla);
         });
 
-        // Al volver a la aplicación después de cambiar la configuración de
-        // pantalla hacemos otra comprobación inmediata.
+        // Al volver a la aplicación hacemos una comprobación inmediata, pero
+        // sin invalidar las métricas. Abrir/cerrar un menú o cambiar el foco no
+        // debe provocar por sí mismo un relayout ni un movimiento del Stage.
         stage.focusedProperty().addListener((obs, oldValue, focused) -> {
             if (focused) {
-                invalidarMetricasPantalla();
                 verificarCambiosPantalla();
             }
         });
@@ -219,7 +225,7 @@ public class Main extends Application {
                 distinto(escalaStageY, ultimaEscalaStageY)
         );
 
-        if (cambioAreaODpi) {
+        if (cambioAreaODpi && !movimientoUsuarioReciente()) {
             marcarRecentradoTrasCambioDpi();
         }
 
@@ -288,6 +294,28 @@ public class Main extends Application {
         }
     }
 
+    private void registrarMovimientoUsuario() {
+        if (ajustandoVentana || forzandoActualizacionDpi) {
+            return;
+        }
+
+        ultimoMovimientoUsuarioNanos = System.nanoTime();
+
+        // Si el usuario empieza a moverla durante las pasadas de estabilización,
+        // su decisión tiene prioridad: cancelamos cualquier recentrado pendiente.
+        pasadasRecentradoPendientes = 0;
+        if (reajustePendiente != null) {
+            reajustePendiente.stop();
+        }
+    }
+
+    private boolean movimientoUsuarioReciente() {
+        if (ultimoMovimientoUsuarioNanos == Long.MIN_VALUE) {
+            return false;
+        }
+        return System.nanoTime() - ultimoMovimientoUsuarioNanos < USER_MOVE_GRACE_NANOS;
+    }
+
     private void marcarRecentradoTrasCambioDpi() {
         pasadasRecentradoPendientes = RECENTER_PASSES_AFTER_DPI_CHANGE;
     }
@@ -330,24 +358,17 @@ public class Main extends Application {
             double visualScale = calcularEscala(visualBounds, chromeWidthScreen, chromeHeightScreen);
             double scale = visualScale * calcularCompensacionDpi(screen);
 
-            double centerX = stage.getX() + stage.getWidth() / 2.0;
-            double centerY = stage.getY() + stage.getHeight() / 2.0;
-
             aplicarEscalaYDimensionar(scale);
 
-            if (!escalasDpiSincronizadas(screen)) {
-                // No usamos centerOnScreen() durante una transición de DPI:
-                // Windows/JavaFX pueden estar mezclando coordenadas del DPI
-                // viejo con las del nuevo y el resultado puede quedar fuera
-                // de pantalla. Centramos nosotros mismos usando el tamaño del
-                // Stage convertido al sistema de coordenadas del Screen.
+            /*
+             * La posición pertenece al usuario. Sólo la modificamos al abrir la
+             * aplicación o cuando existe un recentrado explícitamente pendiente
+             * por un cambio real de resolución/escalado. Un movimiento normal
+             * del Stage nunca pasa por setX()/setY() desde este punto.
+             */
+            if (centrarInicialmente || primeraApertura || hayRecentradoPendiente()) {
                 centrarDentroDelArea(screen);
                 primeraApertura = false;
-            } else if (centrarInicialmente || primeraApertura || hayRecentradoPendiente()) {
-                centrarDentroDelArea(screen);
-                primeraApertura = false;
-            } else {
-                reposicionarDentroDelArea(visualBounds, centerX, centerY);
             }
         } finally {
             ajustandoVentana = false;
@@ -376,9 +397,6 @@ public class Main extends Application {
             Screen screen = obtenerPantallaActual();
             Rectangle2D visualBounds = screen.getVisualBounds();
 
-            double centerX = stage.getX() + stage.getWidth() / 2.0;
-            double centerY = stage.getY() + stage.getHeight() / 2.0;
-
             double chromeWidthStage = medirChrome(
                     stage.getWidth() - scene.getWidth(),
                     INITIAL_CHROME_WIDTH,
@@ -401,20 +419,16 @@ public class Main extends Application {
             double exactScale = visualScale * calcularCompensacionDpi(screen);
             aplicarEscalaYDimensionar(exactScale);
 
-            if (!escalasDpiSincronizadas(screen)) {
-                centrarDentroDelArea(screen);
-                intentarForzarActualizacionDpi(screen);
-            } else if (hayRecentradoPendiente()) {
+            if (hayRecentradoPendiente()) {
                 /*
-                 * Este es el caso que corrige V31: al pasar, por ejemplo,
-                 * 100% -> 150%, el tamaño puede quedar perfecto pero las
-                 * coordenadas heredadas del DPI anterior dejan la barra de
-                 * título fuera de pantalla. Cuando ambas escalas ya coinciden
-                 * recentramos explícitamente dentro del visualBounds actual.
+                 * Las pasadas de recentrado existen únicamente para cambios de
+                 * resolución/DPI del sistema. Si el usuario está moviendo la
+                 * ventana, registrarMovimientoUsuario() ya canceló estas pasadas.
                  */
                 centrarDentroDelArea(screen);
-            } else {
-                reposicionarDentroDelArea(visualBounds, centerX, centerY);
+                if (!escalasDpiSincronizadas(screen)) {
+                    intentarForzarActualizacionDpi(screen);
+                }
             }
         } finally {
             ajustandoVentana = false;
@@ -525,9 +539,9 @@ public class Main extends Application {
     }
 
     /**
-     * Verifica no sólo cambios de Screen/DPI, sino también si el Stage quedó
-     * con un tamaño lógico viejo después de que Windows terminó la transición.
-     * Esto hace al monitor autocorrectivo aunque no llegue un nuevo evento.
+     * Verifica si el Scene quedó con un tamaño lógico viejo después de que el
+     * sistema terminó una transición de DPI. Deliberadamente NO evalúa la
+     * posición del Stage: mover la ventana es una acción del usuario.
      */
     private boolean necesitaReajusteGeometria(Screen screen) {
         if (scene == null || responsiveRoot == null) {
@@ -565,35 +579,15 @@ public class Main extends Application {
                 Math.abs(responsiveRoot.getScaleFactor() - expectedScale) > 0.002;
 
         /*
-         * Si Stage y Screen todavía tienen DPI distintos, la geometría reportada
-         * por Stage está expresada con la escala vieja. Convertimos su tamaño a
-         * coordenadas del Screen actual antes de decidir si está fuera de área.
-         */
-        double stageWidthScreen = convertirStageAScreen(
-                stage.getWidth(), stage.getOutputScaleX(), screen.getOutputScaleX()
-        );
-        double stageHeightScreen = convertirStageAScreen(
-                stage.getHeight(), stage.getOutputScaleY(), screen.getOutputScaleY()
-        );
-
-        final double tolerance = 2.0;
-        boolean fueraDelArea =
-                stage.getX() < visualBounds.getMinX() - tolerance ||
-                stage.getY() < visualBounds.getMinY() - tolerance ||
-                stage.getX() + stageWidthScreen > visualBounds.getMaxX() + tolerance ||
-                stage.getY() + stageHeightScreen > visualBounds.getMaxY() + tolerance;
-
-        /*
-         * Una diferencia persistente entre outputScale de Screen y Stage NO es,
-         * por sí sola, un error de geometría. La compensación DPI ya mantiene el
-         * tamaño físico correcto durante esa situación.
+         * La posición del Stage no forma parte de la "geometría incorrecta".
+         * El usuario puede mover la ventana, incluso cerca de un borde, sin que
+         * el monitor de 250 ms intente devolverla al centro. Si cambia de verdad
+         * la resolución o el DPI, cambioMetricas activa el recentrado explícito.
          *
-         * En V32 esa diferencia hacía que este método devolviera true para
-         * siempre en algunos equipos con 125/150/175%, por lo que el monitor de
-         * 250 ms volvía a ejecutar layout/sizeToScene indefinidamente. Eso era
-         * la causa de la vibración perceptible.
+         * Una diferencia persistente entre outputScale de Screen y Stage tampoco
+         * es por sí sola un error: la compensación DPI mantiene el tamaño físico.
          */
-        return sceneIncorrecta || fueraDelArea;
+        return sceneIncorrecta;
     }
 
     /**

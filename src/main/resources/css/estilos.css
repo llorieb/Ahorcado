@@ -809,3 +809,73 @@
     -fx-font-size: 10px;
     -fx-text-fill: #94a3b8;
 }
+
+/* =========================================================
+   MENÚ SUPERIOR INTEGRADO (HiDPI-safe)
+   ========================================================= */
+
+.menu-superior {
+    -fx-background-color: linear-gradient(to bottom, #fbfbfb, #f0f0f0);
+    -fx-border-color: transparent transparent #d7d7d7 transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-alignment: center-left;
+    -fx-spacing: 0;
+}
+
+.menu-superior-boton {
+    -fx-min-height: 26px;
+    -fx-pref-height: 26px;
+    -fx-max-height: 26px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+    -fx-padding: 0 12px;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #202020;
+    -fx-alignment: center-left;
+    -fx-cursor: default;
+}
+
+.menu-superior-boton:hover,
+.menu-superior-boton.menu-superior-activo {
+    -fx-background-color: #0b9bd3;
+    -fx-text-fill: white;
+}
+
+.menu-popup-integrado {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #b8b8b8;
+    -fx-border-width: 1px;
+    -fx-padding: 4px 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0.18, 1, 2);
+}
+
+.menu-popup-integrado .separator .line {
+    -fx-border-color: #dddddd transparent transparent transparent;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.menu-popup-item {
+    -fx-min-height: 28px;
+    -fx-pref-height: 28px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+    -fx-padding: 0 10px;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #202020;
+    -fx-alignment: center-left;
+    -fx-cursor: default;
+}
+
+.menu-popup-item:hover,
+.menu-popup-item:focused {
+    -fx-background-color: #0b9bd3;
+    -fx-text-fill: white;
+}
+
+.menu-popup-item:disabled {
+    -fx-opacity: 0.45;
+}

@@ -11,6 +11,8 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +23,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
@@ -56,9 +59,19 @@ public class AhorcadoController {
     @FXML
     private Label categoriaValor;
     @FXML
-    private MenuItem menuJugar;
+    private StackPane rootPane;
     @FXML
-    private MenuItem menuPreferencias;
+    private Button btnMenuArchivo;
+    @FXML
+    private Button btnMenuAyuda;
+    @FXML
+    private VBox menuArchivoPopup;
+    @FXML
+    private VBox menuAyudaPopup;
+    @FXML
+    private Button menuJugar;
+    @FXML
+    private Button menuPreferencias;
     @FXML
     private Button btnJugar;
     @FXML
@@ -154,6 +167,7 @@ public class AhorcadoController {
 
     public void initialize() {
         bundle = ResourceBundle.getBundle("/properties/textos_es");
+        configurarMenuIntegrado();
 
         tiempoMaximo = cargarTiempoPreferido();
         tiempoRestante = tiempoMaximo;
@@ -208,6 +222,123 @@ public class AhorcadoController {
         );
     }
 
+
+    /**
+     * Menú superior dibujado dentro del propio Scene. A diferencia del
+     * MenuBar nativo, no crea PopupWindow externos, así que comparte exactamente
+     * la misma transformación responsive que el resto de la interfaz.
+     */
+    private void configurarMenuIntegrado() {
+        if (rootPane == null) {
+            return;
+        }
+
+        rootPane.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            if (!hayMenuIntegradoAbierto()) {
+                return;
+            }
+
+            Object target = event.getTarget();
+            if (!(target instanceof Node node)) {
+                cerrarMenusIntegrados();
+                return;
+            }
+
+            if (!esDescendienteDe(node, btnMenuArchivo)
+                    && !esDescendienteDe(node, btnMenuAyuda)
+                    && !esDescendienteDe(node, menuArchivoPopup)
+                    && !esDescendienteDe(node, menuAyudaPopup)) {
+                cerrarMenusIntegrados();
+            }
+        });
+
+        rootPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE && hayMenuIntegradoAbierto()) {
+                cerrarMenusIntegrados();
+                event.consume();
+            }
+        });
+    }
+
+    @FXML
+    private void toggleMenuArchivo(ActionEvent event) {
+        boolean abrir = menuArchivoPopup != null && !menuArchivoPopup.isVisible();
+        cerrarMenusIntegrados();
+        if (abrir) {
+            mostrarMenuIntegrado(menuArchivoPopup, btnMenuArchivo);
+        }
+    }
+
+    @FXML
+    private void toggleMenuAyuda(ActionEvent event) {
+        boolean abrir = menuAyudaPopup != null && !menuAyudaPopup.isVisible();
+        cerrarMenusIntegrados();
+        if (abrir) {
+            mostrarMenuIntegrado(menuAyudaPopup, btnMenuAyuda);
+        }
+    }
+
+    private void mostrarMenuIntegrado(VBox popup, Button ancla) {
+        if (popup == null || ancla == null || rootPane == null) {
+            return;
+        }
+
+        Bounds anclaEnScene = ancla.localToScene(ancla.getBoundsInLocal());
+        if (anclaEnScene == null) {
+            return;
+        }
+        Bounds anclaEnRoot = rootPane.sceneToLocal(anclaEnScene);
+
+        /*
+         * El popup es unmanaged para que StackPane no lo estire hasta ocupar
+         * toda la altura disponible. Lo dimensionamos a su tamaño preferido y
+         * lo ubicamos manualmente en las mismas coordenadas lógicas del root.
+         * Como popup y ancla viven dentro del mismo árbol escalado, ambos
+         * conservan la alineación en 100%, 125%, 150%, 175%, etc.
+         */
+        popup.applyCss();
+        popup.autosize();
+        popup.relocate(anclaEnRoot.getMinX(), anclaEnRoot.getMaxY());
+        popup.setVisible(true);
+        popup.toFront();
+
+        ancla.getStyleClass().add("menu-superior-activo");
+    }
+
+    private void cerrarMenusIntegrados() {
+        if (menuArchivoPopup != null) {
+            menuArchivoPopup.setVisible(false);
+        }
+        if (menuAyudaPopup != null) {
+            menuAyudaPopup.setVisible(false);
+        }
+        if (btnMenuArchivo != null) {
+            btnMenuArchivo.getStyleClass().remove("menu-superior-activo");
+        }
+        if (btnMenuAyuda != null) {
+            btnMenuAyuda.getStyleClass().remove("menu-superior-activo");
+        }
+    }
+
+    private boolean hayMenuIntegradoAbierto() {
+        return (menuArchivoPopup != null && menuArchivoPopup.isVisible())
+                || (menuAyudaPopup != null && menuAyudaPopup.isVisible());
+    }
+
+    private boolean esDescendienteDe(Node node, Node ancestro) {
+        if (node == null || ancestro == null) {
+            return false;
+        }
+        Node actual = node;
+        while (actual != null) {
+            if (actual == ancestro) {
+                return true;
+            }
+            actual = actual.getParent();
+        }
+        return false;
+    }
+
     private void cargarImagenesReloj() {
         // Supongamos que tienes archivos PNG llamados imagen1.png, imagen2.png, etc.
         for (int i = 0; i <= 12; i++) {
@@ -232,6 +363,7 @@ public class AhorcadoController {
 
     @FXML
     private void iniciarJuego() {
+        cerrarMenusIntegrados();
         detenerEfectoError();
         ocultarResultado();
         ocultarArriesgarInmediato();
@@ -286,6 +418,7 @@ public class AhorcadoController {
      */
     @FXML
     private void mostrarPreferencias(ActionEvent event) {
+        cerrarMenusIntegrados();
         Dialog<PreferenciasJuego> dialog = new Dialog<>();
         dialog.setTitle("Preferencias");
         dialog.setHeaderText("Configuración de juego");
@@ -458,6 +591,7 @@ public class AhorcadoController {
 
     @FXML
     private void cerrarAplicacion(ActionEvent event) {
+        cerrarMenusIntegrados();
         // Realizar cualquier limpieza o acciones necesarias antes de cerrar la aplicación
         detenerTemporizador();
         detenerEfectoError();
@@ -480,6 +614,7 @@ public class AhorcadoController {
 
     @FXML
     private void mostrarComoJugar(ActionEvent event) {
+        cerrarMenusIntegrados();
         if (comoJugarOverlay == null || comoJugarCard == null) {
             return;
         }
@@ -572,6 +707,7 @@ public class AhorcadoController {
 
     @FXML
     private void mostrarAcercaDe(ActionEvent event) {
+        cerrarMenusIntegrados();
         if (acercaOverlay == null || acercaCard == null) {
             return;
         }

@@ -35,11 +35,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -56,29 +53,22 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="785.0" prefWidth="480.0" stylesheets="@css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llorieb.ahorcado.AhorcadoController">
+<StackPane fx:id="rootPane" prefHeight="785.0" prefWidth="480.0" stylesheets="@css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.llorieb.ahorcado.AhorcadoController">
   <children>
     <VBox prefHeight="785.0" prefWidth="480.0">
       <children>
-      <MenuBar prefWidth="400.0" VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="Archivo">
-          <items>
-            <MenuItem fx:id="menuJugar" mnemonicParsing="false" onAction="#iniciarJuego" text="Jugar" />
-                  <MenuItem fx:id="menuPreferencias" mnemonicParsing="false" onAction="#mostrarPreferencias" text="Preferencias..." />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="menuSalir" mnemonicParsing="false" onAction="#cerrarAplicacion" text="Salir" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Ayuda">
-          <items>
-                  <MenuItem mnemonicParsing="false" onAction="#mostrarComoJugar" text="Cómo jugar" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#mostrarAcercaDe" text="Acerca de..." />
-          </items>
-        </Menu>
-      </menus>
-      </MenuBar>
+      <!--
+        Barra de menú integrada en el mismo Scene. Evita los PopupWindow nativos
+        de MenuBar, cuya posición se desalineaba con escalado HiDPI cuando el
+        contenido completo se representa mediante Scale. Mantiene exactamente
+        la misma altura del diseño original.
+      -->
+      <HBox prefHeight="26.0" minHeight="26.0" maxHeight="26.0" prefWidth="480.0" styleClass="menu-superior" VBox.vgrow="NEVER">
+         <children>
+            <Button fx:id="btnMenuArchivo" focusTraversable="false" mnemonicParsing="false" onAction="#toggleMenuArchivo" prefHeight="26.0" text="Archivo" styleClass="menu-superior-boton" />
+            <Button fx:id="btnMenuAyuda" focusTraversable="false" mnemonicParsing="false" onAction="#toggleMenuAyuda" prefHeight="26.0" text="Ayuda" styleClass="menu-superior-boton" />
+         </children>
+      </HBox>
       <HBox prefHeight="46.0" prefWidth="480.0">
          <children>
             <Button fx:id="btnJugar" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#iniciarJuego" prefHeight="46.0" prefWidth="120.0" text="Jugar" styleClass="boton-toolbar, boton-principal">
@@ -244,6 +234,25 @@
             </StackPane>
          </children>
       </VBox>
+      </children>
+    </VBox>
+
+
+    <!-- Menús desplegables integrados: permanecen dentro del árbol escalado -->
+    <VBox fx:id="menuArchivoPopup" visible="false" managed="false" prefWidth="126.0" maxWidth="126.0" styleClass="menu-popup-integrado" StackPane.alignment="TOP_LEFT">
+      <children>
+        <Button fx:id="menuJugar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#iniciarJuego" text="Jugar" styleClass="menu-popup-item" />
+        <Button fx:id="menuPreferencias" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarPreferencias" text="Preferencias..." styleClass="menu-popup-item" />
+        <Separator prefWidth="124.0" />
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cerrarAplicacion" text="Salir" styleClass="menu-popup-item" />
+      </children>
+    </VBox>
+
+    <VBox fx:id="menuAyudaPopup" visible="false" managed="false" prefWidth="126.0" maxWidth="126.0" styleClass="menu-popup-integrado" StackPane.alignment="TOP_LEFT">
+      <children>
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarComoJugar" text="Cómo jugar" styleClass="menu-popup-item" />
+        <Separator prefWidth="124.0" />
+        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarAcercaDe" text="Acerca de..." styleClass="menu-popup-item" />
       </children>
     </VBox>
 
