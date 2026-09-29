@@ -7,16 +7,12 @@
     const host = window.location.hostname.toLowerCase();
     const parts = window.location.pathname.split("/").filter(Boolean);
 
-    // GitHub Pages de proyecto:
-    // https://usuario.github.io/repositorio/
     if (host.endsWith(".github.io")) {
       const owner = host.split(".")[0];
       const repo = parts.length ? parts[0] : `${owner}.github.io`;
       return { owner, repo };
     }
 
-    // Permite una vista local sin romper los enlaces.
-    // Si alguna vez se usa un dominio personalizado, completar aquí:
     return {
       owner: "TU_USUARIO",
       repo: "TU_REPOSITORIO"
@@ -44,8 +40,6 @@
     if (element) element.href = url;
   });
 
-  // En vista local los botones siguen visibles, pero avisa que los enlaces
-  // se completarán automáticamente cuando la página esté publicada.
   if (owner === "TU_USUARIO") {
     document.querySelectorAll('[id^="download-"]').forEach(el => {
       el.addEventListener("click", event => {
