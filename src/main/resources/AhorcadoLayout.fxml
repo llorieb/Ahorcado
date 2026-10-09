@@ -548,7 +548,7 @@
                    textAlignment="CENTER"
                    styleClass="acerca-titulo" />
 
-            <Label text="Versión 1.0.1"
+            <Label text="Versión 1.0.2"
                    alignment="CENTER"
                    styleClass="acerca-version" />
 

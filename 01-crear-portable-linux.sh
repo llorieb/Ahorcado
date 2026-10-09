@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 
 echo
 echo "============================================================"
-echo "  1/3 - Compilando Ahorcado 1.0.1 con Maven"
+echo "  1/3 - Compilando Ahorcado 1.0.2 con Maven"
 echo "============================================================"
 chmod +x ./mvnw
 ./mvnw clean package -DskipTests
@@ -22,12 +22,12 @@ echo "============================================================"
 jpackage \
   --type app-image \
   --name Ahorcado \
-  --app-version 1.0.1 \
+  --app-version 1.0.2 \
   --vendor "Mario Borelli" \
   --copyright "Copyright (c) 1996-2026 Mario Borelli" \
   --description "Juego de Ahorcado" \
   --icon "src/main/resources/images/app-icon.png" \
-  --module-path "target/Ahorcado-1.0.1.jar:target/dependency" \
+  --module-path "target/Ahorcado-1.0.2.jar:target/dependency" \
   --module "com.llorieb.ahorcado/com.llorieb.ahorcado.Main" \
   --dest target/portable-linux
 
@@ -37,7 +37,7 @@ echo "  3/3 - Creando TAR.GZ portable para distribucion"
 echo "============================================================"
 
 ARCH="$(uname -m)"
-TAR_NAME="Ahorcado-1.0.1-linux-${ARCH}.tar.gz"
+TAR_NAME="Ahorcado-1.0.2-linux-${ARCH}.tar.gz"
 tar -C target/portable-linux -czf "target/portable-linux/${TAR_NAME}" Ahorcado
 
 echo

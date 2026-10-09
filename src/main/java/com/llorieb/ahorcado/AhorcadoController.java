@@ -152,6 +152,9 @@ public class AhorcadoController {
     private PauseTransition pausaError;
     private MediaPlayer reproductorFin;
     private MediaPlayer reproductorVictoria;
+    private MediaPlayer reproductorSilencioLinux;
+    private AudioClip sonidoFinLinuxClip;
+    private AudioClip sonidoVictoriaLinuxClip;
     private boolean audioPrecalentado;
     private Paint fondoOriginal;
     private boolean resultadoAnimado;
@@ -161,6 +164,9 @@ public class AhorcadoController {
     private static final double VOLUMEN_ERROR = 0.72;
     private static final double VOLUMEN_FIN = 0.88;
     private static final double VOLUMEN_VICTORIA = 0.86;
+    private static final boolean ES_LINUX = System.getProperty("os.name", "")
+            .toLowerCase(Locale.ROOT)
+            .contains("linux");
 
     private record PreferenciasJuego(int tiempo, String categoria) {
     }
@@ -211,15 +217,50 @@ public class AhorcadoController {
         pausaError = new PauseTransition(Duration.millis(250));
         pausaError.setOnFinished(event -> restaurarFondoDespuesDeError());
 
-        reproductorFin = crearReproductor(
-                "/sonidos/game_over_glass_descent.wav",
-                VOLUMEN_FIN
-        );
+        if (ES_LINUX) {
+            /*
+             * Los sonidos de resultado también son efectos breves (1,08 s y
+             * 0,86 s). En Linux los cargamos como AudioClip, igual que el
+             * efecto de letra incorrecta, porque este camino tiene menor
+             * latencia y no pierde el ataque inicial con PipeWire/PulseAudio.
+             *
+             * Windows conserva exactamente los MediaPlayer que ya funcionan
+             * correctamente allí.
+             */
+            sonidoFinLinuxClip = crearAudioClip(
+                    "/sonidos/game_over_glass_descent.wav",
+                    VOLUMEN_FIN
+            );
+            sonidoVictoriaLinuxClip = crearAudioClip(
+                    "/sonidos/victory_glass_ascent.wav",
+                    VOLUMEN_VICTORIA
+            );
+        } else {
+            reproductorFin = crearReproductor(
+                    "/sonidos/game_over_glass_descent.wav",
+                    VOLUMEN_FIN
+            );
 
-        reproductorVictoria = crearReproductor(
-                "/sonidos/victory_glass_ascent.wav",
-                VOLUMEN_VICTORIA
-        );
+            reproductorVictoria = crearReproductor(
+                    "/sonidos/victory_glass_ascent.wav",
+                    VOLUMEN_VICTORIA
+            );
+        }
+
+        /*
+         * En Linux dejamos cada MediaPlayer nuevamente en STOPPED al terminar.
+         * stop() vuelve al comienzo del medio y evita tener que hacer un
+         * stop/seek/play inmediato justo antes de la siguiente reproducción.
+         * Windows conserva exactamente el camino que ya funciona bien.
+         */
+        if (ES_LINUX) {
+            if (reproductorFin != null) {
+                reproductorFin.setOnEndOfMedia(reproductorFin::stop);
+            }
+            if (reproductorVictoria != null) {
+                reproductorVictoria.setOnEndOfMedia(reproductorVictoria::stop);
+            }
+        }
     }
 
 
@@ -597,6 +638,12 @@ public class AhorcadoController {
         detenerEfectoError();
         detenerSonidosResultado();
 
+        if (reproductorSilencioLinux != null) {
+            reproductorSilencioLinux.stop();
+            reproductorSilencioLinux.dispose();
+            reproductorSilencioLinux = null;
+        }
+
         // Cerrar la aplicación
         Platform.exit();
     }
@@ -960,7 +1007,12 @@ public class AhorcadoController {
          * bloquear el hilo de JavaFX. Si el audio falla, el overlay se muestra
          * igualmente como fallback.
          */
-        if ("resultado-victoria".equals(claseEstado)) {
+        if (ES_LINUX) {
+            AudioClip clip = "resultado-victoria".equals(claseEstado)
+                    ? sonidoVictoriaLinuxClip
+                    : sonidoFinLinuxClip;
+            reproducirSonidoResultadoLinuxYAnimar(clip);
+        } else if ("resultado-victoria".equals(claseEstado)) {
             reproducirSonidoResultadoYAnimar(
                     reproductorVictoria,
                     "victoria"
@@ -1034,15 +1086,31 @@ public class AhorcadoController {
         new ParallelTransition(fade, escala).play();
     }
 
+    private void reproducirSonidoResultadoLinuxYAnimar(AudioClip clip) {
+        /*
+         * AudioClip no expone un callback equivalente a MediaPlayer.onPlaying,
+         * pero estos archivos ya están completamente cargados en memoria y la
+         * salida Linux se mantiene activa con silence_warmup.wav. Por eso
+         * iniciamos sonido y animación en el mismo pulso de JavaFX.
+         */
+        detenerSonidosResultado();
+
+        if (clip != null) {
+            clip.play();
+        }
+        animarResultadoFinPartida();
+    }
+
     private void reproducirSonidoResultadoYAnimar(MediaPlayer reproductor, String descripcion) {
         if (reproductor == null) {
             animarResultadoFinPartida();
             return;
         }
 
+        // Este método sólo se usa en Windows; conservamos su camino original.
         detenerSonidosResultado();
-
         reproductor.seek(Duration.ZERO);
+
         reproductor.setOnPlaying(this::animarResultadoFinPartida);
         reproductor.setOnError(() -> {
             System.err.println(
@@ -1056,6 +1124,22 @@ public class AhorcadoController {
     }
 
     private void detenerSonidosResultado() {
+        if (ES_LINUX) {
+            /*
+             * Los resultados usan AudioClip en Linux. Detenerlos es seguro al
+             * cerrar/reiniciar una tarjeta y no apagamos el reproductor de
+             * silencio, que mantiene activa la tubería de audio.
+             */
+            if (sonidoFinLinuxClip != null) {
+                sonidoFinLinuxClip.stop();
+            }
+            if (sonidoVictoriaLinuxClip != null) {
+                sonidoVictoriaLinuxClip.stop();
+            }
+            return;
+        }
+
+        // Camino original de Windows: se mantiene sin cambios.
         if (reproductorFin != null) {
             reproductorFin.stop();
             reproductorFin.seek(Duration.ZERO);
@@ -1068,23 +1152,37 @@ public class AhorcadoController {
     }
 
     /**
-     * Fuerza la inicialización real del mezclador/dispositivo de audio al arrancar.
+     * Inicializa el audio de forma distinta según el sistema operativo.
      *
-     * AudioClip ya mantiene el WAV decodificado en memoria, pero en algunos equipos
-     * Windows la primera salida de audio de JavaFX puede perder parte del ataque
-     * mientras se abre el dispositivo. Reproducir el mismo clip una vez a un volumen
-     * prácticamente inaudible hace que ese costo ocurra antes de la primera jugada.
+     * Windows conserva el precalentamiento histórico con el clip de error, que
+     * evita perder el ataque de la primera reproducción. En Linux usamos un WAV
+     * de silencio real en bucle: mantiene activa la tubería de JavaFX/PipeWire
+     * sin emitir el "bup" de arranque que se oía con el método de Windows.
      */
     public void precalentarAudio() {
-        if (audioPrecalentado || sonidoErrorClip == null) {
+        if (audioPrecalentado) {
             return;
         }
 
         audioPrecalentado = true;
 
-        // 0.0001 equivale aproximadamente a -80 dB respecto del nivel completo:
-        // fuerza la reproducción real sin que resulte audible para el usuario.
-        sonidoErrorClip.play(0.0001);
+        if (ES_LINUX) {
+            reproductorSilencioLinux = crearReproductor(
+                    "/sonidos/silence_warmup.wav",
+                    1.0
+            );
+
+            if (reproductorSilencioLinux != null) {
+                reproductorSilencioLinux.setCycleCount(MediaPlayer.INDEFINITE);
+                reproductorSilencioLinux.play();
+            }
+            return;
+        }
+
+        // Camino original de Windows: se mantiene exactamente como estaba.
+        if (sonidoErrorClip != null) {
+            sonidoErrorClip.play(0.0001);
+        }
     }
 
     private AudioClip crearAudioClip(String recurso, double volumen) {
@@ -1234,8 +1332,15 @@ public class AhorcadoController {
         }
 
         if (sonidoErrorClip != null) {
-            sonidoErrorClip.stop();
-            sonidoErrorClip.play();
+            if (ES_LINUX) {
+                // El teclado queda bloqueado durante el feedback, por lo que no
+                // necesitamos cortar el clip justo antes de volver a reproducirlo.
+                sonidoErrorClip.play();
+            } else {
+                // Camino original de Windows.
+                sonidoErrorClip.stop();
+                sonidoErrorClip.play();
+            }
         }
     }
 
