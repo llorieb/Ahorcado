@@ -23,9 +23,9 @@ import java.sql.SQLException;
  */
 public final class DatabaseConnection {
     private static final String DATABASE_RESOURCE = "/ahorcado.db";
-    private static final String CORPUS_RESOURCE = "/palabras_v20.tsv";
+    private static final String CORPUS_RESOURCE = "/palabras_v22.tsv";
     private static final String DATABASE_FILE_NAME = "ahorcado.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
     private static Connection connection;
 
     private DatabaseConnection() {
@@ -64,13 +64,16 @@ public final class DatabaseConnection {
     }
 
     /**
-     * Versión 4:
-     * - corrige datos históricos conocidos;
-     * - elimina duplicados exactos dentro de una categoría;
-     * - incorpora el corpus completo de las cuatro categorías;
-     * - crea un índice único para impedir duplicados futuros.
+     * Versión 6:
+     * - conserva las correcciones y el corpus de versiones anteriores;
+     * - incorpora las categorías Equipos de fútbol y Películas;
+     * - normaliza los títulos de películas según su denominación de estreno/uso
+     *   habitual en Argentina;
+     * - mantiene el índice único para impedir duplicados futuros.
      *
-     * Las palabras personalizadas del usuario se conservan.
+     * Las palabras personalizadas del usuario se conservan. Al actualizar desde
+     * una instalación anterior o desde una build de prueba de 1.1.0, el corpus
+     * se completa y los títulos históricos se corrigen sin borrar la base local.
      */
     private static void upgradeDatabase(Path databasePath) throws IOException {
         try (Connection localConnection = DriverManager.getConnection(
@@ -140,6 +143,46 @@ public final class DatabaseConnection {
                 "MERCEDES BENZ",
                 "MERCEDES-BENZ"
         );
+
+        // Títulos de películas normalizados al nombre de estreno/uso en Argentina.
+        actualizarNombreHistorico(connection, "Peliculas", "ALIEN", "ALIEN EL OCTAVO PASAJERO");
+        actualizarNombreHistorico(connection, "Peliculas", "ALIENS", "ALIENS EL REGRESO");
+        actualizarNombreHistorico(connection, "Peliculas", "BLACK PANTHER", "PANTERA NEGRA");
+        actualizarNombreHistorico(connection, "Peliculas", "CAPITÁN AMÉRICA", "CAPITÁN AMÉRICA EL PRIMER VENGADOR");
+        actualizarNombreHistorico(connection, "Peliculas", "CON FALDAS Y A LO LOCO", "UNA EVA Y DOS ADANES");
+        actualizarNombreHistorico(connection, "Peliculas", "CREED", "CREED CORAZÓN DE CAMPEÓN");
+        actualizarNombreHistorico(connection, "Peliculas", "EL CABALLERO OSCURO", "BATMAN EL CABALLERO DE LA NOCHE");
+        actualizarNombreHistorico(connection, "Peliculas", "EL HOBBIT", "EL HOBBIT UN VIAJE INESPERADO");
+        actualizarNombreHistorico(connection, "Peliculas", "EL PRESTIGIO", "EL GRAN TRUCO");
+        actualizarNombreHistorico(connection, "Peliculas", "ACE VENTURA", "ACE VENTURA DETECTIVE DE MASCOTAS");
+        actualizarNombreHistorico(connection, "Peliculas", "EL PROYECTO DE LA BRUJA DE BLAIR", "EL PROYECTO BLAIR WITCH");
+        actualizarNombreHistorico(connection, "Peliculas", "PULP FICTION", "TIEMPOS VIOLENTOS");
+        actualizarNombreHistorico(connection, "Peliculas", "SEVEN", "SEVEN LOS SIETE PECADOS CAPITALES");
+        actualizarNombreHistorico(connection, "Peliculas", "EL PRISIONERO DE AZKABAN", "HARRY POTTER Y EL PRISIONERO DE AZKABAN");
+        actualizarNombreHistorico(connection, "Peliculas", "EL RETORNO DEL REY", "EL SEÑOR DE LOS ANILLOS EL RETORNO DEL REY");
+        actualizarNombreHistorico(connection, "Peliculas", "EL SEÑOR DE LOS ANILLOS", "EL SEÑOR DE LOS ANILLOS LA COMUNIDAD DEL ANILLO");
+        actualizarNombreHistorico(connection, "Peliculas", "ENDGAME", "AVENGERS ENDGAME");
+        actualizarNombreHistorico(connection, "Peliculas", "ET", "E.T. EL EXTRATERRESTRE");
+        actualizarNombreHistorico(connection, "Peliculas", "FURIA EN EL CAMINO", "MAD MAX FURIA EN EL CAMINO");
+        actualizarNombreHistorico(connection, "Peliculas", "GHOST", "GHOST LA SOMBRA DEL AMOR");
+        actualizarNombreHistorico(connection, "Peliculas", "GUERRA INFINITA", "AVENGERS INFINITY WAR");
+        actualizarNombreHistorico(connection, "Peliculas", "HARRY POTTER", "HARRY POTTER Y EL CÁLIZ DE FUEGO");
+        actualizarNombreHistorico(connection, "Peliculas", "HEAT", "FUEGO CONTRA FUEGO");
+        actualizarNombreHistorico(connection, "Peliculas", "HEREDITARY", "EL LEGADO DEL DIABLO");
+        actualizarNombreHistorico(connection, "Peliculas", "HOMBRE DE HIERRO", "IRON MAN");
+        actualizarNombreHistorico(connection, "Peliculas", "INSIDIOUS", "LA NOCHE DEL DEMONIO");
+        actualizarNombreHistorico(connection, "Peliculas", "INTENSA MENTE", "INTENSAMENTE");
+        actualizarNombreHistorico(connection, "Peliculas", "JOHN WICK", "SIN CONTROL JOHN WICK");
+        actualizarNombreHistorico(connection, "Peliculas", "LA CÁMARA SECRETA", "HARRY POTTER Y LA CÁMARA SECRETA");
+        actualizarNombreHistorico(connection, "Peliculas", "LA PIEDRA FILOSOFAL", "HARRY POTTER Y LA PIEDRA FILOSOFAL");
+        actualizarNombreHistorico(connection, "Peliculas", "LAS DOS TORRES", "EL SEÑOR DE LOS ANILLOS LAS DOS TORRES");
+        actualizarNombreHistorico(connection, "Peliculas", "MARCIANO", "MISIÓN RESCATE");
+        actualizarNombreHistorico(connection, "Peliculas", "NOTTING HILL", "UN LUGAR LLAMADO NOTTING HILL");
+        actualizarNombreHistorico(connection, "Peliculas", "PIRATAS DEL CARIBE", "PIRATAS DEL CARIBE LA MALDICIÓN DEL PERLA NEGRA");
+        actualizarNombreHistorico(connection, "Peliculas", "PRISIONEROS", "LA SOSPECHA");
+        actualizarNombreHistorico(connection, "Peliculas", "TERMINATOR 2", "TERMINATOR 2 EL JUICIO FINAL");
+        actualizarNombreHistorico(connection, "Peliculas", "TODO PODEROSO", "TODOPODEROSO");
+        actualizarNombreHistorico(connection, "Peliculas", "UP", "UP UNA AVENTURA DE ALTURA");
     }
 
     private static void actualizarNombreHistorico(

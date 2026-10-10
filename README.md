@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <strong>Versión 1.0.2</strong> · Windows · Linux
+  <strong>Versión 1.1.0</strong> · Windows · Linux
 </p>
 
 ---
@@ -22,12 +22,14 @@ El objetivo es descubrir la palabra o frase antes de agotar los intentos o el ti
 
 ## Características
 
-- Más de **500 palabras y nombres** incluidos.
-- Cuatro categorías:
+- Más de **900 palabras y nombres** incluidos.
+- Seis categorías:
   - Países
   - Ciudades
   - Marcas de autos
   - Bandas de Rock
+  - Equipos de fútbol
+  - Películas
 - Tiempo configurable: **15, 30, 45 o 60 segundos**.
 - Posibilidad de seleccionar letras o **arriesgar la respuesta completa**.
 - Manejo de acentos, diéresis, eñes y otros caracteres especiales.
@@ -68,7 +70,7 @@ Las versiones compiladas se publican en la sección **Releases** del repositorio
 
 Archivo:
 
-`Ahorcado-1.0.2.exe`
+`Ahorcado-1.1.0.exe`
 
 Instalador autocontenido para Windows de 64 bits.
 
@@ -78,7 +80,7 @@ El instalador incluye el runtime necesario, por lo que **no es necesario instala
 
 Archivo:
 
-`ahorcado_1.0.2-1_amd64.deb`
+`ahorcado_1.1.0-1_amd64.deb`
 
 Paquete para sistemas Linux x86-64 basados en Debian, incluyendo Debian, Ubuntu, Linux Mint y distribuciones derivadas.
 
@@ -90,7 +92,7 @@ Incluye su propio runtime Java.
 
 ## Windows
 
-1. Descargá `Ahorcado-1.0.2.exe` desde la sección **Releases**.
+1. Descargá `Ahorcado-1.1.0.exe` desde la sección **Releases**.
 2. Hacé doble clic sobre el archivo descargado.
 3. Seguí los pasos del instalador.
 4. Al finalizar, podrás ejecutar **Ahorcado** desde el menú Inicio o desde el acceso directo creado por el instalador.
@@ -110,7 +112,7 @@ Si descargaste Ahorcado desde este repositorio oficial:
 
 En la mayoría de las distribuciones compatibles:
 
-1. Descargá `ahorcado_1.0.2-1_amd64.deb`.
+1. Descargá `ahorcado_1.1.0-1_amd64.deb`.
 2. Hacé doble clic sobre el archivo.
 3. Abrilo con el instalador de software de tu distribución.
 4. Seleccioná **Instalar**.
@@ -123,7 +125,7 @@ Una vez instalado, **Ahorcado aparecerá en el menú de aplicaciones**.
 Abrí una terminal en la carpeta donde descargaste el archivo y ejecutá:
 
 ```bash
-sudo apt install ./ahorcado_1.0.2-1_amd64.deb
+sudo apt install ./ahorcado_1.1.0-1_amd64.deb
 ```
 
 Es importante mantener el `./` delante del nombre del archivo para indicar que se trata de un paquete local.

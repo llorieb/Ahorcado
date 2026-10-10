@@ -343,6 +343,39 @@
     -fx-font-size: 16px;
 }
 
+/*
+ * Frases extensas (principalmente títulos de películas). Esta variante se
+ * aplica a toda la respuesta sólo cuando el modo compacto todavía necesitaría
+ * tres o más filas. Las medidas siguen perteneciendo al diseño lógico 480x785.
+ */
+.grupo-palabra-denso .celda-palabra {
+    -fx-min-width: 25px;
+    -fx-pref-width: 25px;
+    -fx-max-width: 25px;
+
+    -fx-min-height: 34px;
+    -fx-pref-height: 34px;
+    -fx-max-height: 34px;
+
+    -fx-font-size: 15px;
+}
+
+/*
+ * Último nivel para títulos excepcionalmente largos. Evita que cuatro filas
+ * desplacen el teclado y mantiene el contenido dentro del diseño base.
+ */
+.grupo-palabra-ultra-compacto .celda-palabra {
+    -fx-min-width: 22px;
+    -fx-pref-width: 22px;
+    -fx-max-width: 22px;
+
+    -fx-min-height: 31px;
+    -fx-pref-height: 31px;
+    -fx-max-height: 31px;
+
+    -fx-font-size: 14px;
+}
+
 /* Guiones, apóstrofes y otros signos visibles dentro de un nombre. */
 .separador-palabra {
     -fx-min-width: 10px;

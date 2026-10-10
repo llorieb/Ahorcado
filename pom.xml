@@ -6,7 +6,7 @@
 
     <groupId>com.llorieb</groupId>
     <artifactId>Ahorcado</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
     <name>Ahorcado</name>
 
     <properties>
@@ -54,6 +54,17 @@
                 <version>3.14.0</version>
                 <configuration>
                     <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+                <configuration>
+                    <!-- Los tests JavaFX se ejecutan en classpath para evitar
+                         interferencias del module-path; no afecta al build normal. -->
+                    <useModulePath>false</useModulePath>
                 </configuration>
             </plugin>
 

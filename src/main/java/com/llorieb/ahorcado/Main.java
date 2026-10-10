@@ -36,6 +36,7 @@ public class Main extends Application {
     private Stage stage;
     private Scene scene;
     private ResponsivePane responsiveRoot;
+    private AhorcadoController controller;
     private PauseTransition reajustePendiente;
     private Timeline monitorPantalla;
     private boolean primeraApertura = true;
@@ -85,6 +86,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/AhorcadoLayout.fxml"));
         Parent content = loader.load();
+        this.controller = loader.getController();
 
         this.stage = primaryStage;
         configurarStage(primaryStage);
@@ -118,16 +120,18 @@ public class Main extends Application {
             ajustarVentanaAlAreaDisponible(true);
             primaryStage.setOpacity(1.0);
 
-            AhorcadoController controller = loader.getController();
-            controller.precalentarAudio();
+            if (controller != null) {
+                controller.precalentarAudio();
+            }
         });
     }
 
     private void configurarStage(Stage stage) {
         stage.setTitle("Ahorcado");
-        stage.getIcons().add(
-                new Image(getClass().getResourceAsStream("/images/app-icon.png"))
-        );
+        var iconUrl = getClass().getResource("/images/app-icon.png");
+        if (iconUrl != null) {
+            stage.getIcons().add(new Image(iconUrl.toExternalForm()));
+        }
     }
 
     private void instalarReajusteDinamico(Stage stage) {
@@ -795,6 +799,9 @@ public class Main extends Application {
         }
         if (reajustePendiente != null) {
             reajustePendiente.stop();
+        }
+        if (controller != null) {
+            controller.liberarRecursos();
         }
         DatabaseConnection.closeConnection();
     }

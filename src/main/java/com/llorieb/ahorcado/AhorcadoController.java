@@ -126,7 +126,9 @@ public class AhorcadoController {
             "Paises",
             "Ciudades",
             "Marcas de autos",
-            "Bandas de Rock"
+            "Bandas de Rock",
+            "Equipos de futbol",
+            "Peliculas"
     };
     private static final String PREF_CATEGORIA = "categoriaJuego";
 
@@ -171,8 +173,23 @@ public class AhorcadoController {
     private record PreferenciasJuego(int tiempo, String categoria) {
     }
 
+    /**
+     * Densidades visuales de la respuesta. Todas las medidas están expresadas
+     * en las coordenadas lógicas del diseño base de 480 x 785. El escalado
+     * HiDPI continúa siendo responsabilidad exclusiva de Main/ResponsivePane.
+     */
+    private enum DensidadPalabra {
+        NORMAL,
+        COMPACTA,
+        DENSA,
+        ULTRA
+    }
+
+    private record PresentacionPalabra(DensidadPalabra densidad, int lineas) {
+    }
+
     public void initialize() {
-        bundle = ResourceBundle.getBundle("/properties/textos_es");
+        bundle = ResourceBundle.getBundle("properties.textos_es");
         configurarMenuIntegrado();
 
         tiempoMaximo = cargarTiempoPreferido();
@@ -381,24 +398,32 @@ public class AhorcadoController {
     }
 
     private void cargarImagenesReloj() {
-        // Supongamos que tienes archivos PNG llamados imagen1.png, imagen2.png, etc.
         for (int i = 0; i <= 12; i++) {
             String nombreImagen = "/images/sw" + i + ".png";
-            InputStream input = getClass().getResourceAsStream(nombreImagen);
-
-            Image imagen = new Image(input);
-            imagenesReloj.add(new ImagenReloj(imagen));
+            imagenesReloj.add(new ImagenReloj(cargarImagenRecurso(nombreImagen)));
         }
     }
 
     private void cargarImagenesPersonaje() {
-        // Supongamos que tienes archivos PNG llamados imagen1.png, imagen2.png, etc.
         for (int i = 100; i <= 106; i++) {
             String nombreImagen = "/images/" + i + ".png";
-            InputStream input = getClass().getResourceAsStream(nombreImagen);
+            imagenesPersonaje.add(new ImagenPersonaje(cargarImagenRecurso(nombreImagen)));
+        }
+    }
 
-            Image imagen = new Image(input);
-            imagenesPersonaje.add(new ImagenPersonaje(imagen));
+    /**
+     * Image carga el contenido de forma síncrona cuando recibe un InputStream.
+     * Por eso el stream del recurso puede cerrarse inmediatamente después, en
+     * lugar de quedar abierto durante toda la ejecución.
+     */
+    private Image cargarImagenRecurso(String recurso) {
+        try (InputStream input = getClass().getResourceAsStream(recurso)) {
+            if (input == null) {
+                throw new IllegalStateException("No se encontró la imagen: " + recurso);
+            }
+            return new Image(input);
+        } catch (java.io.IOException e) {
+            throw new IllegalStateException("No se pudo cerrar/cargar la imagen: " + recurso, e);
         }
     }
 
@@ -447,8 +472,6 @@ public class AhorcadoController {
         timeline.play();
 
         palabraSecreta = obtenerPalabraSecreta();
-        System.out.println(palabraSecreta);
-
         enmascararPalabraAdivinar();
         mostrarPalabraAdivinar();
     }
@@ -616,6 +639,8 @@ public class AhorcadoController {
             case "Ciudades" -> "Ciudades";
             case "Marcas de autos" -> "Marcas de autos";
             case "Bandas de Rock" -> "Bandas de Rock";
+            case "Equipos de futbol" -> "Equipos de fútbol";
+            case "Peliculas" -> "Películas";
             default -> categoria;
         };
     }
@@ -633,18 +658,7 @@ public class AhorcadoController {
     @FXML
     private void cerrarAplicacion(ActionEvent event) {
         cerrarMenusIntegrados();
-        // Realizar cualquier limpieza o acciones necesarias antes de cerrar la aplicación
-        detenerTemporizador();
-        detenerEfectoError();
-        detenerSonidosResultado();
-
-        if (reproductorSilencioLinux != null) {
-            reproductorSilencioLinux.stop();
-            reproductorSilencioLinux.dispose();
-            reproductorSilencioLinux = null;
-        }
-
-        // Cerrar la aplicación
+        liberarRecursos();
         Platform.exit();
     }
 
@@ -951,7 +965,9 @@ public class AhorcadoController {
     }
 
     private void detenerTemporizador() {
-        if (timeline != null && timeline.getStatus() == Animation.Status.RUNNING) {
+        // stop() es seguro tanto en RUNNING como en PAUSED o STOPPED.
+        // Así ningún Timeline queda pausado reteniendo su KeyFrame al finalizar.
+        if (timeline != null) {
             timeline.stop();
         }
     }
@@ -1148,6 +1164,45 @@ public class AhorcadoController {
         if (reproductorVictoria != null) {
             reproductorVictoria.stop();
             reproductorVictoria.seek(Duration.ZERO);
+        }
+    }
+
+    /**
+     * Libera recursos de larga vida al cerrar la aplicación. Es idempotente:
+     * puede ser llamado desde el botón Salir y nuevamente desde Application.stop().
+     * No modifica el estado visual durante una sesión normal.
+     */
+    public void liberarRecursos() {
+        detenerTemporizador();
+        detenerEfectoError();
+        detenerSonidosResultado();
+
+        if (reproductorSilencioLinux != null) {
+            reproductorSilencioLinux.stop();
+            reproductorSilencioLinux.dispose();
+            reproductorSilencioLinux = null;
+        }
+
+        if (reproductorFin != null) {
+            reproductorFin.stop();
+            reproductorFin.dispose();
+            reproductorFin = null;
+        }
+
+        if (reproductorVictoria != null) {
+            reproductorVictoria.stop();
+            reproductorVictoria.dispose();
+            reproductorVictoria = null;
+        }
+
+        if (sonidoErrorClip != null) {
+            sonidoErrorClip.stop();
+        }
+        if (sonidoFinLinuxClip != null) {
+            sonidoFinLinuxClip.stop();
+        }
+        if (sonidoVictoriaLinuxClip != null) {
+            sonidoVictoriaLinuxClip.stop();
         }
     }
 
@@ -1485,6 +1540,7 @@ public class AhorcadoController {
         palabraBox.getChildren().clear();
 
         if (palabraSecreta == null || palabraSecreta.isBlank()) {
+            configurarPalabraBox(new PresentacionPalabra(DensidadPalabra.NORMAL, 1));
             Label placeholder = new Label("Sin palabra");
             placeholder.getStyleClass().add("palabra-placeholder");
             palabraBox.getChildren().add(placeholder);
@@ -1492,18 +1548,22 @@ public class AhorcadoController {
         }
 
         /*
-         * Algunas respuestas largas y muy conocidas (por ejemplo
-         * EMIRATOS ÁRABES UNIDOS o RED HOT CHILI PEPPERS) necesitarían tres
-         * líneas con el tamaño normal. En esos casos se compacta de forma
-         * moderada toda la frase para conservar un máximo de dos líneas.
+         * La respuesta se adapta únicamente dentro del layout lógico de
+         * 480 x 785. No se consulta la resolución, el DPI ni la escala del
+         * sistema: ResponsivePane sigue escalando todo el Scene como una sola
+         * unidad, exactamente igual que en las versiones anteriores.
+         *
+         * Para frases largas se elige la densidad menos agresiva que evita
+         * desbordes. Si hacen falta tres filas, el FlowPane recibe la altura
+         * real de esas filas para que nunca invada el encabezado CATEGORÍA.
          */
-        boolean compactaGlobal = requiereModoCompactoGlobal(palabraSecreta);
-        palabraBox.setHgap(compactaGlobal ? 7.0 : 16.0);
+        PresentacionPalabra presentacion = calcularPresentacionPalabra(palabraSecreta);
+        configurarPalabraBox(presentacion);
 
         /*
          * Cada palabra se crea como un HBox independiente. El FlowPane puede
-         * mover el bloque completo a la segunda línea, pero nunca corta una
-         * palabra por la mitad.
+         * mover el bloque completo a otra línea, pero nunca corta una palabra
+         * por la mitad.
          */
         int inicioPalabra = 0;
 
@@ -1517,7 +1577,7 @@ public class AhorcadoController {
                             crearGrupoPalabra(
                                     inicioPalabra,
                                     i,
-                                    compactaGlobal
+                                    presentacion.densidad()
                             )
                     );
                 }
@@ -1528,12 +1588,40 @@ public class AhorcadoController {
     }
 
     /**
-     * Estima cuántas líneas ocuparía una frase con el tamaño normal actual.
-     * Si supera dos líneas se activa el modo compacto global.
+     * Selecciona la densidad visual más legible posible para la frase.
+     *
+     * NORMAL conserva el aspecto histórico. COMPACTA intenta mantener dos
+     * filas. DENSA permite respuestas extensas sin reducirlas en exceso y
+     * ULTRA queda reservada a títulos excepcionalmente largos.
      */
-    private boolean requiereModoCompactoGlobal(String frase) {
+    private PresentacionPalabra calcularPresentacionPalabra(String frase) {
+        int lineasNormal = estimarLineas(frase, DensidadPalabra.NORMAL);
+        if (lineasNormal <= 2) {
+            return new PresentacionPalabra(DensidadPalabra.NORMAL, lineasNormal);
+        }
+
+        int lineasCompactas = estimarLineas(frase, DensidadPalabra.COMPACTA);
+        if (lineasCompactas <= 2) {
+            return new PresentacionPalabra(DensidadPalabra.COMPACTA, lineasCompactas);
+        }
+
+        int lineasDensas = estimarLineas(frase, DensidadPalabra.DENSA);
+        if (lineasDensas <= 3) {
+            return new PresentacionPalabra(DensidadPalabra.DENSA, lineasDensas);
+        }
+
+        int lineasUltra = estimarLineas(frase, DensidadPalabra.ULTRA);
+        return new PresentacionPalabra(DensidadPalabra.ULTRA, lineasUltra);
+    }
+
+    /**
+     * Estima el número de filas usando las mismas medidas lógicas que luego
+     * se aplican a los nodos JavaFX. El ancho disponible sigue siendo 430 px
+     * dentro del diseño base; no son píxeles físicos de la pantalla.
+     */
+    private int estimarLineas(String frase, DensidadPalabra densidad) {
         final double anchoDisponible = 430.0;
-        final double espacioEntrePalabras = 16.0;
+        final double espacioEntrePalabras = obtenerHGap(densidad);
 
         double anchoLinea = 0.0;
         int lineas = 1;
@@ -1543,11 +1631,7 @@ public class AhorcadoController {
                 continue;
             }
 
-            double anchoGrupo = estimarAnchoGrupo(palabra, false);
-
-            if (anchoGrupo > anchoDisponible) {
-                return true;
-            }
+            double anchoGrupo = estimarAnchoGrupo(palabra, densidad);
 
             if (anchoLinea == 0.0) {
                 anchoLinea = anchoGrupo;
@@ -1557,47 +1641,60 @@ public class AhorcadoController {
             } else {
                 lineas++;
                 anchoLinea = anchoGrupo;
-
-                if (lineas > 2) {
-                    return true;
-                }
             }
         }
 
-        return false;
+        return lineas;
     }
 
     /**
      * Calcula aproximadamente el ancho visual de un bloque de palabra usando
-     * las mismas medidas definidas en CSS.
+     * las mismas medidas definidas en CSS para cada densidad.
      */
-    private double estimarAnchoGrupo(
-            String palabra,
-            boolean compactaGlobal
-    ) {
+    private double estimarAnchoGrupo(String palabra, DensidadPalabra densidad) {
         int cantidadCaracteres = palabra.length();
-        boolean muyCompacta = cantidadCaracteres > 13;
-        boolean compacta = compactaGlobal || cantidadCaracteres > 11;
 
         double anchoLetra;
         double espacioInterno;
 
-        if (muyCompacta) {
-            anchoLetra = 27.0;
-            espacioInterno = 2.0;
-        } else if (compacta) {
-            anchoLetra = 30.0;
-            espacioInterno = 3.0;
-        } else {
-            anchoLetra = 34.0;
-            espacioInterno = 5.0;
+        switch (densidad) {
+            case ULTRA -> {
+                anchoLetra = 22.0;
+                espacioInterno = 1.0;
+            }
+            case DENSA -> {
+                anchoLetra = 25.0;
+                espacioInterno = 2.0;
+            }
+            case COMPACTA -> {
+                if (cantidadCaracteres > 13) {
+                    anchoLetra = 27.0;
+                    espacioInterno = 2.0;
+                } else {
+                    anchoLetra = 30.0;
+                    espacioInterno = 3.0;
+                }
+            }
+            case NORMAL -> {
+                if (cantidadCaracteres > 13) {
+                    anchoLetra = 27.0;
+                    espacioInterno = 2.0;
+                } else if (cantidadCaracteres > 11) {
+                    anchoLetra = 30.0;
+                    espacioInterno = 3.0;
+                } else {
+                    anchoLetra = 34.0;
+                    espacioInterno = 5.0;
+                }
+            }
+            default -> throw new IllegalStateException("Densidad no soportada: " + densidad);
         }
 
         double ancho = 0.0;
 
         for (int i = 0; i < palabra.length(); i++) {
             char c = palabra.charAt(i);
-            ancho += Character.isLetter(c) ? anchoLetra : 10.0;
+            ancho += Character.isLetterOrDigit(c) ? anchoLetra : 10.0;
 
             if (i < palabra.length() - 1) {
                 ancho += espacioInterno;
@@ -1607,26 +1704,81 @@ public class AhorcadoController {
         return ancho;
     }
 
+    private void configurarPalabraBox(PresentacionPalabra presentacion) {
+        DensidadPalabra densidad = presentacion.densidad();
+        double vGap = obtenerVGap(densidad);
+        double altoFila = obtenerAltoFila(densidad);
+
+        palabraBox.setHgap(obtenerHGap(densidad));
+        palabraBox.setVgap(vGap);
+
+        double altoContenido = presentacion.lineas() * altoFila
+                + Math.max(0, presentacion.lineas() - 1) * vGap;
+
+        // 88 px conserva exactamente la altura histórica para 1 o 2 filas.
+        double altoNecesario = Math.max(88.0, altoContenido);
+        palabraBox.setMinHeight(altoNecesario);
+        palabraBox.setPrefHeight(altoNecesario);
+    }
+
+    private double obtenerHGap(DensidadPalabra densidad) {
+        return switch (densidad) {
+            // La separación entre palabras debe ser inequívoca para el jugador.
+            // Estos valores pertenecen al layout lógico 480x785; ResponsivePane
+            // continúa aplicando luego la escala global de la ventana.
+            case NORMAL -> 24.0;
+            case COMPACTA -> 18.0;
+            case DENSA -> 14.0;
+            case ULTRA -> 9.0;
+        };
+    }
+
+    private double obtenerVGap(DensidadPalabra densidad) {
+        return switch (densidad) {
+            case NORMAL, COMPACTA -> 8.0;
+            case DENSA -> 6.0;
+            case ULTRA -> 4.0;
+        };
+    }
+
+    private double obtenerAltoFila(DensidadPalabra densidad) {
+        return switch (densidad) {
+            case NORMAL -> 40.0;
+            case COMPACTA -> 38.0;
+            case DENSA -> 34.0;
+            case ULTRA -> 31.0;
+        };
+    }
+
     /**
      * Crea una palabra como bloque visual indivisible.
-     *
-     * Las palabras normales conservan las celdas de 34 px. Las palabras
-     * largas, o una frase que de otro modo requeriría tres líneas, usan una
-     * variante compacta. Sólo tokens de más de 13 caracteres usan la variante
-     * "muy compacta" de 27 px.
      */
     private HBox crearGrupoPalabra(
             int inicio,
             int fin,
-            boolean compactaGlobal
+            DensidadPalabra densidad
     ) {
         int cantidadCaracteres = fin - inicio;
-        boolean muyCompacta = cantidadCaracteres > 13;
-        boolean compacta = compactaGlobal || cantidadCaracteres > 11;
+        boolean compacta = densidad == DensidadPalabra.COMPACTA
+                || (densidad == DensidadPalabra.NORMAL && cantidadCaracteres > 11);
+        boolean muyCompacta = (densidad == DensidadPalabra.NORMAL
+                || densidad == DensidadPalabra.COMPACTA)
+                && cantidadCaracteres > 13;
+        boolean densa = densidad == DensidadPalabra.DENSA;
+        boolean ultra = densidad == DensidadPalabra.ULTRA;
 
-        double separacion = muyCompacta
-                ? 2.0
-                : (compacta ? 3.0 : 5.0);
+        double separacion;
+        if (ultra) {
+            separacion = 1.0;
+        } else if (densa) {
+            separacion = 2.0;
+        } else if (muyCompacta) {
+            separacion = 2.0;
+        } else if (compacta) {
+            separacion = 3.0;
+        } else {
+            separacion = 5.0;
+        }
 
         HBox grupo = new HBox(separacion);
         grupo.setAlignment(javafx.geometry.Pos.CENTER);
@@ -1640,18 +1792,31 @@ public class AhorcadoController {
             grupo.getStyleClass().add("grupo-palabra-muy-compacto");
         }
 
+        if (densa) {
+            grupo.getStyleClass().add("grupo-palabra-denso");
+        }
+
+        if (ultra) {
+            grupo.getStyleClass().add("grupo-palabra-ultra-compacto");
+        }
+
         for (int i = inicio; i < fin; i++) {
             char secreto = palabraSecreta.charAt(i);
             char visible = palabraActual.charAt(i);
 
-            if (Character.isLetter(secreto)) {
+            if (Character.isLetterOrDigit(secreto)) {
                 Label celda = new Label();
                 celda.getStyleClass().add("celda-palabra");
 
-                if (visible == '_') {
+                if (Character.isLetter(secreto) && visible == '_') {
                     celda.setText("");
                 } else {
-                    // Se muestra el carácter original, incluidos sus acentos.
+                    /*
+                     * Las letras acertadas y los dígitos se muestran en una
+                     * celda normal. Los números no forman parte del teclado,
+                     * por lo que quedan revelados desde el comienzo (2001,
+                     * ROCKY 4, TERMINATOR 2, etc.).
+                     */
                     celda.setText(String.valueOf(secreto));
                     celda.getStyleClass().add("celda-revelada");
                 }
